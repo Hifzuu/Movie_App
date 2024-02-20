@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "870499629883",
+    "project_id": "cross-platform-assignmen-bd6da",
+    "storage_bucket": "cross-platform-assignmen-bd6da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870499629883:android:546c199ed4bb45bd27151e",
+        "android_client_info": {
+          "package_name": "com.example.movie_assignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxJsaLl5WW90xkzekc26OPkPU9Artf7ZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
