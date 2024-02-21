@@ -17,6 +17,8 @@ dependencies:
   cloud_firestore: ^4.15.5
   cupertino_icons: ^1.0.2
   another_flushbar: ^1.12.30
+  riverpod: ^2.5.0
+  http: ^1.2.0
 
 
 dev_dependencies:

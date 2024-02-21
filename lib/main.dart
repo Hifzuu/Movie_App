@@ -4,6 +4,9 @@ import 'package:movie_assignment/firebase_options.dart';
 import 'views/login_view.dart';
 import 'views/home_view.dart';
 import 'views/signup_view.dart';
+import 'views/watched_movies_view.dart';
+import 'views/to-watch_movies_view.dart';
+import 'views/reviews_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -28,6 +31,9 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginView(),
         '/home': (context) => HomeView(),
         '/signup': (context) => SignupView(),
+        '/watched_movies': (context) => WatchedMoviesView(),
+        '/to_watch_movies': (context) => ToWatchMoviesView(),
+        '/reviews': (context) => ReviewsView(),
       },
     );
   }
