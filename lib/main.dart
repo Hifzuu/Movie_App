@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/firebase_options.dart';
 import 'views/login_view.dart';
-import 'views/home_view.dart';
+import 'views/home_view copy.dart';
 import 'views/signup_view.dart';
 import 'views/watched_movies_view.dart';
 import 'views/to-watch_movies_view.dart';
@@ -21,9 +21,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Movie App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      title: 'Watch Pilot',
+      theme: ThemeData.light().copyWith(
+        //primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/login',
