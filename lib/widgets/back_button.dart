@@ -15,15 +15,16 @@ class backButton extends StatelessWidget {
         left: 16,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        color: const Color.fromARGB(137, 33, 149, 243),
+        borderRadius: BorderRadius.circular(100),
       ),
       child: IconButton(
         onPressed: () {
           Navigator.pop(context);
         },
         icon: const Icon(
-          Icons.arrow_back_rounded,
+          Icons.arrow_back,
+          color: Colors.white,
         ),
       ),
     );

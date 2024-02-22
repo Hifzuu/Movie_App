@@ -15,13 +15,27 @@ class api {
   static const _upcomingUrl =
       'https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey';
 
+  Future<Movie> getMovieDetails(int movieId) async {
+    final response = await http.get(
+      Uri.parse('https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey'),
+    );
+
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body);
+      return Movie.fromJson(decodedData);
+    } else {
+      throw Exception('Failed to load movie details');
+    }
+  }
+
   Future<List<Movie>> getTrendingMovies() async {
     final Response = await http.get(Uri.parse(_trendingUrl));
     if (Response.statusCode == 200) {
       final decodedData = json.decode(Response.body)['results'] as List;
-      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+      List<Movie> movies = await _getMoviesWithDetails(decodedData);
+      return movies;
     } else {
-      throw Exception('error');
+      throw Exception('Error fetching trending movies');
     }
   }
 
@@ -29,9 +43,10 @@ class api {
     final Response = await http.get(Uri.parse(_topRatedUrl));
     if (Response.statusCode == 200) {
       final decodedData = json.decode(Response.body)['results'] as List;
-      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+      List<Movie> movies = await _getMoviesWithDetails(decodedData);
+      return movies;
     } else {
-      throw Exception('error');
+      throw Exception('Error fetching top-rated movies');
     }
   }
 
@@ -39,9 +54,22 @@ class api {
     final Response = await http.get(Uri.parse(_upcomingUrl));
     if (Response.statusCode == 200) {
       final decodedData = json.decode(Response.body)['results'] as List;
-      return decodedData.map((movie) => Movie.fromJson(movie)).toList();
+      List<Movie> movies = await _getMoviesWithDetails(decodedData);
+      return movies;
     } else {
-      throw Exception('error');
+      throw Exception('Error fetching upcoming movies');
     }
+  }
+
+  Future<List<Movie>> _getMoviesWithDetails(List<dynamic> movieList) async {
+    List<Movie> moviesWithDetails = [];
+
+    for (dynamic movie in movieList) {
+      int movieId = movie['id'];
+      Movie movieDetails = await getMovieDetails(movieId);
+      moviesWithDetails.add(movieDetails);
+    }
+
+    return moviesWithDetails;
   }
 }

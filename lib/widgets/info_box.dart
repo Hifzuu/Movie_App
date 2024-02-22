@@ -19,8 +19,16 @@ class InfoBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(10),
+        color: Color.fromARGB(255, 33, 149, 243),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: Offset(0, 3),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -29,7 +37,7 @@ class InfoBox extends StatelessWidget {
               icon,
               color: iconColor,
             ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,7 +46,7 @@ class InfoBox extends StatelessWidget {
                 style: GoogleFonts.aBeeZee(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
               Text(
@@ -46,13 +54,40 @@ class InfoBox extends StatelessWidget {
                 style: GoogleFonts.aBeeZee(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class DurationInfoBox extends StatelessWidget {
+  final String label;
+  final int durationInMinutes;
+  final IconData icon;
+  final Color iconColor;
+
+  const DurationInfoBox({
+    required this.label,
+    required this.durationInMinutes,
+    required this.icon,
+    required this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    int hours = durationInMinutes ~/ 60;
+    int minutes = durationInMinutes % 60;
+
+    return InfoBox(
+      label: label,
+      value: '${hours}h ${minutes}min',
+      icon: icon,
+      iconColor: iconColor,
     );
   }
 }

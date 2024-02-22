@@ -45,14 +45,36 @@ class DetailsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movie.title,
-                    style: GoogleFonts.abrilFatface(
+                    '${movie.title} (${DateTime.parse(movie.releaseDate).year})',
+                    style: GoogleFonts.amiko(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InfoBox(
+                        label: 'Release Date:',
+                        value: movie.releaseDate,
+                      ),
+                      InfoBox(
+                        label: 'Rating:',
+                        value: '${movie.voteAverage.toStringAsFixed(1)}/10',
+                        icon: Icons.star,
+                        iconColor: Colors.amber,
+                      ),
+                      DurationInfoBox(
+                        label: 'Duration:',
+                        durationInMinutes: movie.duration,
+                        icon: Icons.timer_outlined,
+                        iconColor: Colors.white,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
                   Text(
                     'Description',
                     style: GoogleFonts.aBeeZee(
@@ -70,30 +92,12 @@ class DetailsView extends StatelessWidget {
                     ),
                     textAlign: TextAlign.justify,
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InfoBox(
-                        label: 'Release Date',
-                        value: movie.releaseDate,
-                      ),
-                      InfoBox(
-                        label: 'Rating',
-                        value: '${movie.voteAverage.toStringAsFixed(1)}/10',
-                        icon: Icons.star,
-                        iconColor: Colors.amber,
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
           ),
         ],
       ),
-
-// InfoBox Widget for consistent styling of information boxes
     );
   }
 }
