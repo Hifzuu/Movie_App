@@ -7,13 +7,9 @@ class SignupView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign Up'),
-      ),
       body: Container(
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 255, 255, 255),
-        ),
+        decoration:
+            BoxDecoration(color: Theme.of(context).colorScheme.background),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SignupForm(),
@@ -117,10 +113,9 @@ class _SignupFormState extends State<SignupForm> {
         Text(
           'Sign Up',
           style: TextStyle(
-            fontSize: 36.0,
-            fontWeight: FontWeight.bold,
-            color: Color.fromARGB(255, 3, 7, 32), // Dark blue color
-          ),
+              fontSize: 36.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.secondary),
         ),
         SizedBox(height: 24.0),
         TextFormField(
@@ -134,7 +129,7 @@ class _SignupFormState extends State<SignupForm> {
           ),
         ),
         SizedBox(height: 16.0),
-        TextField(
+        TextFormField(
           controller: _passwordController,
           obscureText: true,
           decoration: InputDecoration(
@@ -155,8 +150,7 @@ class _SignupFormState extends State<SignupForm> {
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(
-                Color.fromARGB(255, 3, 7, 32),
-              ),
+                  Theme.of(context).colorScheme.primary),
               shape: MaterialStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
@@ -167,7 +161,7 @@ class _SignupFormState extends State<SignupForm> {
               ),
             ),
             child: Text(
-              'Sign Up',
+              'SIGN UP',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -185,7 +179,7 @@ class _SignupFormState extends State<SignupForm> {
           child: Text(
             "Already signed up? Log In",
             style: TextStyle(
-              color: Color.fromARGB(255, 3, 7, 32), // Dark blue color
+              color: Theme.of(context).colorScheme.secondary,
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
             ),

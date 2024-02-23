@@ -7,8 +7,6 @@ import 'package:movie_assignment/widgets/trending_slider.dart';
 import 'watched_movies_view.dart';
 import 'to-watch_movies_view.dart';
 import 'reviews_view.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class HomeView extends StatefulWidget {
   @override
@@ -58,7 +56,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0,
         title: Text("WATCHPILOT"),
         centerTitle: true,
@@ -195,15 +193,19 @@ class _HomeViewState extends State<HomeView> {
             label: 'Settings',
           ),
         ],
-        selectedItemColor: Colors.blue, // Set the color for the active item
-        unselectedItemColor: Colors.grey, // Set the color for unselected items
+        selectedItemColor: Theme.of(context)
+            .colorScheme
+            .primary, // Set the color for the active item
+        unselectedItemColor: Theme.of(context)
+            .colorScheme
+            .background, // Set the color for unselected items
         type: BottomNavigationBarType
             .fixed, // Set to fixed for persistent navigation bar
         showSelectedLabels: true, // Show labels for the selected item
         showUnselectedLabels: true, // Show labels for unselected items
         elevation: 8, // Set the elevation for a subtle shadow
         backgroundColor:
-            Color.fromARGB(255, 235, 235, 235), // Set the background color
+            Theme.of(context).colorScheme.secondary, // Set the background color
         selectedFontSize: 12, // Set font size for selected label
         unselectedFontSize: 12, // Set font size for unselected labels
         // Handle navigation events

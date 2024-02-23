@@ -1,6 +1,7 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/firebase_options.dart';
+import 'package:movie_assignment/theme/theme.dart';
 import 'views/login_view.dart';
 import 'views/home_view copy.dart';
 import 'views/signup_view.dart';
@@ -22,10 +23,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Watch Pilot',
-      theme: ThemeData.light().copyWith(
-        //primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: lightMode,
+      darkTheme: darkMode,
       initialRoute: '/login',
       routes: {
         '/login': (context) => LoginView(),

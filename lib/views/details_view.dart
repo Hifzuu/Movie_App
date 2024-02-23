@@ -20,7 +20,7 @@ class DetailsView extends StatelessWidget {
         slivers: [
           SliverAppBar(
             leading: const backButton(),
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.background,
             expandedHeight: 350,
             pinned: true,
             floating: true,
@@ -49,7 +49,7 @@ class DetailsView extends StatelessWidget {
                     style: GoogleFonts.amiko(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -80,7 +80,7 @@ class DetailsView extends StatelessWidget {
                     style: GoogleFonts.aBeeZee(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -88,9 +88,29 @@ class DetailsView extends StatelessWidget {
                     movie.overview,
                     style: GoogleFonts.aBeeZee(
                       fontSize: 16,
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle adding to watchlist
+                          // You can implement your logic here
+                        },
+                        child: Text('Add to Watchlist'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle adding to watched list
+                          // You can implement your logic here
+                        },
+                        child: Text('Add to Watched List'),
+                      ),
+                    ],
                   ),
                 ],
               ),
