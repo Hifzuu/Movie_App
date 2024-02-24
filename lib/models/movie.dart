@@ -33,4 +33,24 @@ class Movie {
       duration: json["runtime"] as int? ?? 0,
     );
   }
+
+  String toString() {
+    // Convert the Movie object to a string representation
+    return '$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration';
+  }
+
+  factory Movie.fromString(String string) {
+    // Create a Movie object from a string representation
+    List<String> parts = string.split('|');
+    return Movie(
+      title: parts[0],
+      backdropPath: parts[1],
+      originalTitle: parts[2],
+      overview: parts[3],
+      posterPath: parts[4],
+      releaseDate: parts[5],
+      voteAverage: double.parse(parts[6]),
+      duration: int.parse(parts[7]),
+    );
+  }
 }

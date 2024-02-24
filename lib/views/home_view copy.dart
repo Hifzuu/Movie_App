@@ -58,6 +58,10 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0,
+        leading: Icon(
+          Icons.menu,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
         title: Text("WATCHPILOT"),
         centerTitle: true,
       ),
@@ -168,47 +172,58 @@ class _HomeViewState extends State<HomeView> {
           //SettingsView(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onBottomNavTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.reviews),
-            label: 'Reviews',
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Divider(
+            height: 1, // Adjust the height as needed
+            thickness: 0.1, // Adjust the thickness for a subtle appearance
+            color: Colors.grey.shade500, // Use the desired color
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.movie),
-            label: 'Watched',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'To-Watch',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+          BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: _onBottomNavTapped,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.reviews),
+                label: 'Reviews',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.movie),
+                label: 'Watched',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.star),
+                label: 'To-Watch',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
+            ],
+            selectedItemColor: Theme.of(context)
+                .colorScheme
+                .primary, // Set the color for the active item
+            unselectedItemColor: Theme.of(context)
+                .colorScheme
+                .secondary, // Set the color for unselected items
+            type: BottomNavigationBarType
+                .fixed, // Set to fixed for persistent navigation bar
+            showSelectedLabels: true, // Show labels for the selected item
+            showUnselectedLabels: true, // Show labels for unselected items
+            elevation: 8, // Set the elevation for a subtle shadow
+            backgroundColor: Theme.of(context)
+                .colorScheme
+                .background, // Set the background color
+            selectedFontSize: 12, // Set font size for selected label
+            unselectedFontSize: 12, // Set font size for unselected labels
+            // Handle navigation events
           ),
         ],
-        selectedItemColor: Theme.of(context)
-            .colorScheme
-            .primary, // Set the color for the active item
-        unselectedItemColor: Theme.of(context)
-            .colorScheme
-            .background, // Set the color for unselected items
-        type: BottomNavigationBarType
-            .fixed, // Set to fixed for persistent navigation bar
-        showSelectedLabels: true, // Show labels for the selected item
-        showUnselectedLabels: true, // Show labels for unselected items
-        elevation: 8, // Set the elevation for a subtle shadow
-        backgroundColor:
-            Theme.of(context).colorScheme.secondary, // Set the background color
-        selectedFontSize: 12, // Set font size for selected label
-        unselectedFontSize: 12, // Set font size for unselected labels
-        // Handle navigation events
       ),
     );
   }

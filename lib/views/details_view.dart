@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_assignment/api_service/api.dart';
+import 'package:movie_assignment/local_storage_service/watchedList_local.dart';
 import 'package:movie_assignment/models/movie.dart';
+import 'package:movie_assignment/views/watched_movies_view.dart';
 import 'package:movie_assignment/widgets/back_button.dart';
 import 'package:movie_assignment/widgets/info_box.dart';
 
@@ -104,9 +106,30 @@ class DetailsView extends StatelessWidget {
                         child: Text('Add to Watchlist'),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           // Handle adding to watched list
                           // You can implement your logic here
+                          await LocalStorage.addToWatchedListLocally(movie);
+
+                          // Show a success pop-up message
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Success'),
+                                content: Text('Movie added to Watched List'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                         child: Text('Add to Watched List'),
                       ),
