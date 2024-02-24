@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_assignment/api_service/api.dart';
-import 'package:movie_assignment/local_storage_service/watchedList_local.dart';
+import 'package:movie_assignment/local_storage_service/watchedList_local.dart'
+    as watched;
+import 'package:movie_assignment/local_storage_service/to_watch_list.dart'
+    as toWatch;
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/watched_movies_view.dart';
 import 'package:movie_assignment/widgets/back_button.dart';
@@ -72,7 +75,7 @@ class DetailsView extends StatelessWidget {
                         label: 'Duration:',
                         durationInMinutes: movie.duration,
                         icon: Icons.timer_outlined,
-                        iconColor: Colors.white,
+                        iconColor: Theme.of(context).colorScheme.secondary,
                       ),
                     ],
                   ),
@@ -99,39 +102,226 @@ class DetailsView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                        onPressed: () {
-                          // Handle adding to watchlist
-                          // You can implement your logic here
+                        onPressed: () async {
+                          // Check if the movie is already in the watched list
+                          List<Movie> toWatchMovies = await toWatch.LocalStorage
+                              .getToWatchListLocally();
+                          bool isAlreadyAdded = toWatchMovies
+                              .any((element) => element.id == movie.id);
+
+                          if (isAlreadyAdded) {
+                            // Show a message indicating that the movie is already in the watched list
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                    'Movie already added',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors
+                                          .red, // Change the color to your preference
+                                    ),
+                                  ),
+                                  content: const Text(
+                                    'This movie is already in your Watch List',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors
+                                              .blue, // Change the color to your preference
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  elevation: 5, // Adjust the elevation
+                                );
+                              },
+                            );
+                          } else {
+                            // Movie is not in the watched list, proceed to add it
+                            await toWatch.LocalStorage.addToWatchListLocally(
+                                movie);
+
+                            // Show a success pop-up message
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                    'Success',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  content: const Text(
+                                      'Movie added to Watch List Successfuly!'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
-                        child: Text('Add to Watchlist'),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.background,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 20,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              'To Watch',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
+                            ),
+                          ],
+                        ),
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          // Handle adding to watched list
-                          // You can implement your logic here
-                          await LocalStorage.addToWatchedListLocally(movie);
+                          // Check if the movie is already in the watched list
+                          List<Movie> watchedMovies = await watched.LocalStorage
+                              .getWatchedListLocally();
+                          bool isAlreadyAdded = watchedMovies
+                              .any((element) => element.id == movie.id);
 
-                          // Show a success pop-up message
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Success'),
-                                content: Text('Movie added to Watched List'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pop(); // Close the dialog
-                                    },
-                                    child: Text('OK'),
+                          if (isAlreadyAdded) {
+                            // Show a message indicating that the movie is already in the watched list
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                    'Movie already added',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors
+                                          .red, // Change the color to your preference
+                                    ),
                                   ),
-                                ],
-                              );
-                            },
-                          );
+                                  content: const Text(
+                                    'This movie is already in your Watched List',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors
+                                              .blue, // Change the color to your preference
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  elevation: 5, // Adjust the elevation
+                                );
+                              },
+                            );
+                          } else {
+                            // Movie is not in the watched list, proceed to add it
+                            await watched.LocalStorage.addToWatchedListLocally(
+                                movie);
+
+                            // Show a success pop-up message
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text(
+                                    'Success',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  content: const Text(
+                                      'Movie added to Watched List Successfuly!'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         },
-                        child: Text('Add to Watched List'),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.background,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Icon(
+                            //   Icons.check,
+                            //   size: 20,
+                            //   color: Colors.white,
+                            // ),
+                            SizedBox(width: 8),
+                            Text(
+                              'Add to Watched',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

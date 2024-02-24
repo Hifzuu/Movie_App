@@ -20,15 +20,7 @@ class InfoBox extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Color.fromARGB(255, 33, 149, 243),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 10,
-            offset: Offset(0, 3),
-          ),
-        ],
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
       ),
       child: Row(
         children: [
@@ -46,7 +38,7 @@ class InfoBox extends StatelessWidget {
                 style: GoogleFonts.aBeeZee(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               Text(
@@ -54,7 +46,7 @@ class InfoBox extends StatelessWidget {
                 style: GoogleFonts.aBeeZee(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ],

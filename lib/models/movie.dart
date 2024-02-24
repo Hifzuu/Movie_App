@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 class Movie {
+  int id;
   String title;
   String backdropPath;
   String originalTitle;
@@ -11,6 +12,7 @@ class Movie {
   int duration;
 
   Movie({
+    required this.id,
     required this.title,
     required this.backdropPath,
     required this.originalTitle,
@@ -23,6 +25,7 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
+      id: json['id'] as int? ?? 0,
       title: json["title"] ?? "",
       backdropPath: json["backdrop_path"] ?? "",
       originalTitle: json["original_title"] ?? "",
@@ -36,21 +39,22 @@ class Movie {
 
   String toString() {
     // Convert the Movie object to a string representation
-    return '$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration';
+    return '$id|$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration';
   }
 
   factory Movie.fromString(String string) {
     // Create a Movie object from a string representation
     List<String> parts = string.split('|');
     return Movie(
-      title: parts[0],
-      backdropPath: parts[1],
-      originalTitle: parts[2],
-      overview: parts[3],
-      posterPath: parts[4],
-      releaseDate: parts[5],
-      voteAverage: double.parse(parts[6]),
-      duration: int.parse(parts[7]),
+      id: int.parse(parts[0]),
+      title: parts[1],
+      backdropPath: parts[2],
+      originalTitle: parts[3],
+      overview: parts[4],
+      posterPath: parts[5],
+      releaseDate: parts[6],
+      voteAverage: double.parse(parts[7]),
+      duration: int.parse(parts[8]),
     );
   }
 }
