@@ -50,25 +50,37 @@ class Movie {
   }
 
   String toString() {
-    // Convert the Movie object to a string representation
-    return '$id|$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration';
+    String trailersString =
+        trailers.map((trailer) => trailer.toString()).join(",");
+    return '$id|$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration|$trailersString';
   }
 
   factory Movie.fromString(String string) {
     // Create a Movie object from a string representation
-    List<String> parts = string.split('|');
-    return Movie(
-      id: int.parse(parts[0]),
-      title: parts[1],
-      backdropPath: parts[2],
-      originalTitle: parts[3],
-      overview: parts[4],
-      posterPath: parts[5],
-      releaseDate: parts[6],
-      voteAverage: double.parse(parts[7]),
-      duration: int.parse(parts[8]),
-      trailers: [],
-    );
+    try {
+      List<String> parts = string.split('|');
+      List<Trailer> trailers = parts[9]
+          .split('|')
+          .map((trailerString) => Trailer.fromString(trailerString))
+          .toList();
+
+      return Movie(
+        id: int.parse(parts[0]),
+        title: parts[1],
+        backdropPath: parts[2],
+        originalTitle: parts[3],
+        overview: parts[4],
+        posterPath: parts[5],
+        releaseDate: parts[6],
+        voteAverage: double.parse(parts[7]),
+        duration: int.parse(parts[8]),
+        trailers: trailers,
+      );
+    } catch (e) {
+      // Add a print statement to debug
+      print('Error creating Movie from string: $string\nError: $e');
+      rethrow;
+    }
   }
 
   String? get trailerKey {

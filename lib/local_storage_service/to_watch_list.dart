@@ -30,14 +30,17 @@ class LocalStorage {
     return toWatchMovieList;
   }
 
-  static Future<void> removeToWatchListLocally(Movie movie) async {
+  static Future<void> removeToWatchListLocally(int movieId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // Retrieve the existing watched movies list from local storage
     List<String>? toWatchMovies = prefs.getStringList('to_watch_movies') ?? [];
 
-    // Remove the specified movie from the list
-    toWatchMovies.remove(movie.toString());
+    // Remove the movie with the specified ID from the list
+    toWatchMovies = toWatchMovies.where((toWatchMovies) {
+      Movie movie = Movie.fromString(toWatchMovies);
+      return movie.id != movieId;
+    }).toList();
 
     // Save the updated watched movies list back to local storage
     prefs.setStringList('to_watch_movies', toWatchMovies);

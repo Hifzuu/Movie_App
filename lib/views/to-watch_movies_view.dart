@@ -148,7 +148,7 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                                     TextButton(
                                       onPressed: () {
                                         LocalStorage.removeToWatchListLocally(
-                                            movie);
+                                            movie.id);
                                         // Reload watched movies
                                         loadToWatchMovies();
                                         Navigator.pop(

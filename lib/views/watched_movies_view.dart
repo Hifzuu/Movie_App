@@ -151,7 +151,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                                       onPressed: () {
                                         LocalStorage
                                             .removeFromWatchedListLocally(
-                                                movie);
+                                                movie.id);
                                         // Reload watched movies
                                         loadWatchedMovies();
                                         Navigator.pop(
