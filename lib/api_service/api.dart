@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:movie_assignment/models/movie.dart';
+import 'package:movie_assignment/models/trailer.dart';
 import 'dart:convert';
 
 class api {
@@ -17,7 +18,8 @@ class api {
 
   Future<Movie> getMovieDetails(int movieId) async {
     final response = await http.get(
-      Uri.parse('https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey'),
+      Uri.parse(
+          'https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey&append_to_response=videos'),
     );
 
     if (response.statusCode == 200) {

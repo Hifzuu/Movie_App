@@ -7,8 +7,11 @@ import 'package:movie_assignment/local_storage_service/to_watch_list.dart'
     as toWatch;
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/watched_movies_view.dart';
+import 'package:movie_assignment/widgets/trailer_screen.dart';
 import 'package:movie_assignment/widgets/back_button.dart';
 import 'package:movie_assignment/widgets/info_box.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetailsView extends StatelessWidget {
   const DetailsView({
@@ -30,16 +33,55 @@ class DetailsView extends StatelessWidget {
             pinned: true,
             floating: true,
             flexibleSpace: FlexibleSpaceBar(
-              background: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(24),
-                  bottomRight: Radius.circular(24),
-                ),
-                child: Image.network(
-                  '${api.imagePath}${movie.posterPath}',
-                  filterQuality: FilterQuality.high,
-                  fit: BoxFit.cover,
-                ),
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Movie poster image
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(24),
+                      bottomRight: Radius.circular(24),
+                    ),
+                    child: Image.network(
+                      '${api.imagePath}${movie.posterPath}',
+                      filterQuality: FilterQuality.high,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  // Play button overlay
+                  Positioned.fill(
+                    child: InkWell(
+                      onTap: () {
+                        String? videoKey = movie.trailerKey;
+
+                        if (videoKey != null) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  TrailerScreen(videoKey: videoKey),
+                            ),
+                          );
+                        } else {
+                          print('No trailer available for this movie');
+                        }
+                      },
+                      child: Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                          padding: const EdgeInsets.all(16),
+                          child: Icon(
+                            Icons.play_arrow,
+                            size: 50,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -120,8 +162,7 @@ class DetailsView extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors
-                                          .red, // Change the color to your preference
+                                      color: Colors.red,
                                     ),
                                   ),
                                   content: const Text(
@@ -133,15 +174,13 @@ class DetailsView extends StatelessWidget {
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Close the dialog
+                                        Navigator.of(context).pop();
                                       },
                                       child: const Text(
                                         'OK',
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors
-                                              .blue, // Change the color to your preference
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ),
@@ -149,7 +188,7 @@ class DetailsView extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
-                                  elevation: 5, // Adjust the elevation
+                                  elevation: 5,
                                 );
                               },
                             );
@@ -231,8 +270,7 @@ class DetailsView extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors
-                                          .red, // Change the color to your preference
+                                      color: Colors.red,
                                     ),
                                   ),
                                   content: const Text(
@@ -251,8 +289,7 @@ class DetailsView extends StatelessWidget {
                                         'OK',
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: Colors
-                                              .blue, // Change the color to your preference
+                                          color: Colors.blue,
                                         ),
                                       ),
                                     ),
@@ -260,7 +297,7 @@ class DetailsView extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
-                                  elevation: 5, // Adjust the elevation
+                                  elevation: 5,
                                 );
                               },
                             );

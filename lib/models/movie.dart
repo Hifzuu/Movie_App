@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'package:movie_assignment/models/trailer.dart';
 
 class Movie {
   int id;
@@ -10,6 +10,7 @@ class Movie {
   String releaseDate;
   double voteAverage;
   int duration;
+  List<Trailer> trailers;
 
   Movie({
     required this.id,
@@ -21,9 +22,19 @@ class Movie {
     required this.releaseDate,
     required this.voteAverage,
     required this.duration,
+    required this.trailers,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic>? videosJson = json['videos'] as Map<String, dynamic>?;
+
+    List<Trailer> trailers = [];
+    if (videosJson != null) {
+      List<dynamic> trailersJson = videosJson['results'];
+      trailers = trailersJson.map((trailerJson) {
+        return Trailer.fromJson(trailerJson);
+      }).toList();
+    }
     return Movie(
       id: json['id'] as int? ?? 0,
       title: json["title"] ?? "",
@@ -34,6 +45,7 @@ class Movie {
       releaseDate: json["release_date"]?.toString() ?? "",
       voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
       duration: json["runtime"] as int? ?? 0,
+      trailers: trailers,
     );
   }
 
@@ -55,6 +67,12 @@ class Movie {
       releaseDate: parts[6],
       voteAverage: double.parse(parts[7]),
       duration: int.parse(parts[8]),
+      trailers: [],
     );
+  }
+
+  String? get trailerKey {
+    // Return the key of the first trailer, or null if there are no trailers
+    return trailers.isNotEmpty ? trailers[0].key : null;
   }
 }
