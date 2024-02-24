@@ -23,9 +23,12 @@ class LocalStorage {
     List<String>? watchedMovies = prefs.getStringList('watched_movies');
 
     // Convert the list of strings back to a list of Movie objects
-    List<Movie> watchedMoviesList =
-        watchedMovies?.map((string) => Movie.fromString(string))?.toList() ??
-            [];
+    List<Movie> watchedMoviesList = watchedMovies?.map((string) {
+          Movie movie = Movie.fromString(string);
+          print('Movie details from local storage: ${movie.toString()}');
+          return movie;
+        }).toList() ??
+        [];
 
     return watchedMoviesList;
   }

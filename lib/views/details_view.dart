@@ -69,7 +69,10 @@ class DetailsView extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white.withOpacity(0.8),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .background
+                                .withOpacity(0.5),
                           ),
                           padding: const EdgeInsets.all(16),
                           child: Icon(
