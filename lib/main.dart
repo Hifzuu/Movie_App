@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/firebase_options.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
+import 'package:movie_assignment/views/welcome_view.dart';
 import 'package:provider/provider.dart';
 import 'views/login_view.dart';
 import 'views/home_view copy.dart';
@@ -34,8 +35,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Watch Pilot',
       theme: Provider.of<ThemeProvider>(context).themeData,
-      initialRoute: '/login',
+      initialRoute: '/welcome',
       routes: {
+        '/welcome': (context) => WelcomeView(),
         '/login': (context) => LoginView(),
         '/home': (context) => HomeView(),
         '/signup': (context) => SignupView(),

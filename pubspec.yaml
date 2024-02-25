@@ -27,6 +27,7 @@ dependencies:
   youtube_player_flutter: ^9.0.0
   webview_flutter: ^4.7.0
   flutter_inappwebview: ^6.0.0
+  icons_plus: ^5.0.0
   
 
 
@@ -37,7 +38,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-      - lib/assets/images/
 
-  
+  assets:
+    - lib/assets/images/
+    

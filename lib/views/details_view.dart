@@ -74,26 +74,34 @@ class DetailsView extends StatelessWidget {
                           print('No trailer available for this movie');
                         }
                       },
-                      child: movie.trailers != null &&
-                              movie.trailers!.isNotEmpty
-                          ? Center(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .background
-                                      .withOpacity(0.5),
-                                ),
-                                padding: const EdgeInsets.all(16),
-                                child: Icon(
-                                  Icons.play_arrow,
-                                  size: 50,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            )
-                          : SizedBox.shrink(),
+                      child:
+                          movie.trailers != null && movie.trailers!.isNotEmpty
+                              ? Center(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary, // Adjust background color
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(
+                                              0.3), // Add a subtle shadow
+                                          spreadRadius: 2,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    padding: const EdgeInsets.all(16),
+                                    child: const Icon(
+                                      Icons.play_arrow,
+                                      size: 50,
+                                      color: Colors.white, // Adjust icon color
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
                     ),
                   ),
                 ],
@@ -378,6 +386,15 @@ class DetailsView extends StatelessWidget {
                           ),
                         ),
                     ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'need to add more details e.g actors or movie revenue',
+                    style: GoogleFonts.aBeeZee(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    textAlign: TextAlign.justify,
                   ),
                 ],
               ),

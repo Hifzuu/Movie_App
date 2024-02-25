@@ -257,8 +257,7 @@ class _SignupFormState extends State<SignupForm> {
                 "Already signed up? Log In",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
                 ),
               ),
             ),
