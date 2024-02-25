@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart' as signOut;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/models/user.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
+import 'package:movie_assignment/views/search_view.dart';
 import 'package:movie_assignment/widgets/movies_slider.dart';
 import 'package:movie_assignment/widgets/trending_slider.dart';
 import 'package:provider/provider.dart';
@@ -142,9 +144,13 @@ class _HomeViewState extends State<HomeView> {
                 title: Text('Logout',
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary)),
-                onTap: () {
-                  // Add your logout logic here
-                  Navigator.pop(context); // Close the drawer
+                onTap: () async {
+                  try {
+                    await signOut.FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacementNamed(context, '/login');
+                  } catch (e) {
+                    print('Error signing out: $e');
+                  }
                 },
               ),
             ],
@@ -197,7 +203,7 @@ class _HomeViewState extends State<HomeView> {
                                 ),
                               ),
                               Text(
-                                '${user.name}!',
+                                '${user.name.toUpperCase()}!',
                                 style: GoogleFonts.aBeeZee(
                                   fontSize: 24.0,
                                   fontWeight: FontWeight.bold,
@@ -213,8 +219,54 @@ class _HomeViewState extends State<HomeView> {
                     },
                   ),
                   const SizedBox(height: 16),
+                  Padding(
+                    //search bar
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchView(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                            horizontal: 10.0,
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.search,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              SizedBox(width: 8.0),
+                              Text(
+                                'Search',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   Text(
-                    'Trending Movies',
+                    'Trending Movies Today',
                     style: GoogleFonts.aBeeZee(
                       fontSize: 18.0, // Adjust the font size as needed
                     ),

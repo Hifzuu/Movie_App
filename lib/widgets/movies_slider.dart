@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/api_service/api.dart';
+import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/details_view.dart';
 
 class MoviesSlider extends StatelessWidget {
@@ -9,6 +10,7 @@ class MoviesSlider extends StatelessWidget {
   });
 
   final AsyncSnapshot snapshot;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -27,22 +29,48 @@ class MoviesSlider extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => DetailsView(
-                      movie: snapshot.data[index],
+                      movie: snapshot.data![index],
                     ),
                   ),
                 );
               },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: SizedBox(
-                  height: 200,
-                  width: 150,
-                  child: Image.network(
-                    filterQuality: FilterQuality.high,
-                    fit: BoxFit.cover,
-                    '${api.imagePath}${snapshot.data![index].posterPath}',
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                    child: SizedBox(
+                      height: 200,
+                      width: 150,
+                      child: Image.network(
+                        '${api.imagePath}${snapshot.data![index].posterPath}',
+                        filterQuality: FilterQuality.high,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
+                  Positioned(
+                    bottom: -5,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.7),
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        snapshot.data![index].title,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                        maxLines: 2, // Adjust as needed
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           );

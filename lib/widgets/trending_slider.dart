@@ -41,8 +41,8 @@ class TrendingSlider extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
-                height: 300,
-                width: 200,
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.width,
                 child: Image.network(
                   filterQuality: FilterQuality.high,
                   fit: BoxFit.cover,
