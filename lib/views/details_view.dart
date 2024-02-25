@@ -247,7 +247,7 @@ class DetailsView extends StatelessWidget {
                             ),
                             SizedBox(width: 8),
                             Text(
-                              'To Watch',
+                              'To - Watch',
                               style:
                                   TextStyle(fontSize: 16, color: Colors.white),
                             ),

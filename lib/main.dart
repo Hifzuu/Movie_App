@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/firebase_options.dart';
 import 'package:movie_assignment/theme/theme.dart';
+import 'package:movie_assignment/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'views/login_view.dart';
 import 'views/home_view copy.dart';
 import 'views/signup_view.dart';
@@ -15,7 +17,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // Initialize Firebase
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -24,8 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Watch Pilot',
-      theme: lightMode,
-      darkTheme: darkMode,
+      theme: Provider.of<ThemeProvider>(context).themeData,
       initialRoute: '/login',
       routes: {
         '/login': (context) => LoginView(),

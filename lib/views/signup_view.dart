@@ -27,11 +27,34 @@ class SignupForm extends StatefulWidget {
 class _SignupFormState extends State<SignupForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _profilePictureController =
+      TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isPasswordVisible = false;
 
   Future<void> _signup() async {
     final String email = _emailController.text;
     final String password = _passwordController.text;
+    final String confirmPassword = _confirmPasswordController.text;
+    final String name = _nameController.text;
+    //final String profilePicture = _profilePictureController.text;
+
+    if (password != confirmPassword) {
+      _showErrorMessage(context, 'Passwords do not match.');
+      return;
+    }
+
+    // Check if the name is null, empty, contains a number, or has special characters
+    if (name == null ||
+        name.isEmpty ||
+        name.contains(RegExp(r'\d')) ||
+        name.contains(RegExp(r'[!@#%^&*(),.?":{}|<>]'))) {
+      _showErrorMessage(context, 'Please provide a valid name.');
+      return;
+    }
 
     try {
       UserCredential userCredential =
@@ -46,7 +69,8 @@ class _SignupFormState extends State<SignupForm> {
           .doc(userCredential.user!.uid)
           .set({
         'email': email,
-        // Add more fields as needed
+        'name': name,
+        //'profilePicture': profilePicture,
       });
 
       // Debug print to verify successful account creation
@@ -107,85 +131,142 @@ class _SignupFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Sign Up',
-          style: TextStyle(
-              fontSize: 36.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.secondary),
-        ),
-        SizedBox(height: 24.0),
-        TextFormField(
-          controller: _emailController,
-          decoration: InputDecoration(
-            labelText: 'Email',
-            prefixIcon: Icon(Icons.email),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Sign Up',
+              style: TextStyle(
+                fontSize: 28.0,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
-          ),
-        ),
-        SizedBox(height: 16.0),
-        TextFormField(
-          controller: _passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            prefixIcon: Icon(Icons.lock),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
+            SizedBox(height: 12.0),
+            TextFormField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: 'Name',
+                prefixIcon: Icon(Icons.person),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
             ),
-          ),
-        ),
-        SizedBox(height: 24.0),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              // Perform signup authentication
-              _signup();
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  Theme.of(context).colorScheme.primary),
-              shape: MaterialStateProperty.all<OutlinedBorder>(
-                RoundedRectangleBorder(
+            SizedBox(height: 12.0),
+            TextFormField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                prefixIcon: Icon(Icons.email),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+            ),
+            SizedBox(height: 12.0),
+            TextFormField(
+              controller: _passwordController,
+              obscureText: !_isPasswordVisible,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                prefixIcon: Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Theme.of(context)
+                        .primaryColorDark, // Adjust color as needed
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
-              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                EdgeInsets.symmetric(vertical: 16.0),
+            ),
+            SizedBox(height: 12.0),
+            TextFormField(
+              controller: _confirmPasswordController,
+              obscureText: !_isPasswordVisible,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                prefixIcon: Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isPasswordVisible
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Theme.of(context)
+                        .primaryColorDark, // Adjust color as needed
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
               ),
             ),
-            child: Text(
-              'SIGN UP',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+            SizedBox(height: 16.0),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Perform signup authentication
+                  _signup();
+                },
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).colorScheme.primary,
+                  ),
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                    EdgeInsets.symmetric(vertical: 12.0),
+                  ),
+                ),
+                child: const Text(
+                  'SIGN UP',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        SizedBox(height: 12.0),
-        GestureDetector(
-          onTap: () {
-            // Navigate to the login page when the link is tapped
-            Navigator.pushReplacementNamed(context, '/login');
-          },
-          child: Text(
-            "Already signed up? Log In",
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
+            SizedBox(height: 8.0),
+            GestureDetector(
+              onTap: () {
+                // Navigate to the login page when the link is tapped
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+              child: Text(
+                "Already signed up? Log In",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

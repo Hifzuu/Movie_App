@@ -26,7 +26,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  bool _isPasswordVisible = false;
   Future<void> _authenticateUser() async {
     try {
       if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -96,12 +96,12 @@ class _LoginFormState extends State<LoginForm> {
         Text(
           'Login',
           style: TextStyle(
-              fontSize: 36.0,
+              fontSize: 28.0,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.secondary // Dark blue color
               ),
         ),
-        SizedBox(height: 24.0),
+        SizedBox(height: 12.0),
         TextFormField(
           controller: _emailController,
           decoration: InputDecoration(
@@ -112,19 +112,31 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
         ),
-        SizedBox(height: 16.0),
+        SizedBox(height: 12.0),
         TextFormField(
           controller: _passwordController,
-          obscureText: true,
+          obscureText: !_isPasswordVisible,
           decoration: InputDecoration(
             labelText: 'Password',
             prefixIcon: Icon(Icons.lock),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Theme.of(context)
+                    .primaryColorDark, // Adjust color as needed
+              ),
+              onPressed: () {
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
+              },
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),
         ),
-        SizedBox(height: 24.0),
+        SizedBox(height: 12.0),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
@@ -147,14 +159,14 @@ class _LoginFormState extends State<LoginForm> {
             child: Text(
               'LOG IN',
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 18.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
           ),
         ),
-        SizedBox(height: 12.0),
+        SizedBox(height: 8.0),
         GestureDetector(
           onTap: () {
             // Navigate to the login page when the link is tapped
@@ -164,7 +176,7 @@ class _LoginFormState extends State<LoginForm> {
             "Don't have an account? Register",
             style: TextStyle(
               color: Theme.of(context).colorScheme.secondary, // Dark blue color
-              fontSize: 16.0,
+              fontSize: 14.0,
               fontWeight: FontWeight.bold,
             ),
           ),

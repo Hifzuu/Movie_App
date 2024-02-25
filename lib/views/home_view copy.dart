@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/models/movie.dart';
+import 'package:movie_assignment/models/user.dart';
+import 'package:movie_assignment/theme/theme_provider.dart';
 import 'package:movie_assignment/widgets/movies_slider.dart';
 import 'package:movie_assignment/widgets/trending_slider.dart';
+import 'package:provider/provider.dart';
 import 'watched_movies_view.dart';
 import 'to-watch_movies_view.dart';
 import 'reviews_view.dart';
@@ -20,6 +23,7 @@ int _currentIndex = 2; // Default index for the "Home" view
 late PageController _pageController;
 
 class _HomeViewState extends State<HomeView> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
@@ -55,15 +59,97 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0,
-        leading: Icon(
-          Icons.menu,
-          color: Theme.of(context).colorScheme.secondary,
+        leading: IconButton(
+          icon: Icon(
+            Icons.menu,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
         ),
-        title: Text("WATCHPILOT"),
+        title: Text("WATCHPILOT", style: GoogleFonts.alef()),
         centerTitle: true,
+      ),
+      drawer: Drawer(
+        child: Container(
+          color: Theme.of(context).colorScheme.background,
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 32),
+                    Text(
+                      'WATCHPILOT',
+                      style: GoogleFonts.alef(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+              ),
+              ListTile(
+                leading: Icon(Icons.home,
+                    color: Theme.of(context).colorScheme.secondary),
+                title: Text('Home',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary)),
+                onTap: () {
+                  Navigator.pop(context);
+                  _onBottomNavTapped(2);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings,
+                    color: Theme.of(context).colorScheme.secondary),
+                title: Text('Settings',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary)),
+                onTap: () {
+                  Navigator.pop(context); // Close the drawer
+                  // Add your navigation logic if needed
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.brightness_6,
+                    color: Theme.of(context).colorScheme.secondary),
+                title: Text('Toggle Dark Mode',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary)),
+                onTap: () {
+                  Provider.of<ThemeProvider>(context, listen: false)
+                      .toggleTheme();
+                },
+              ),
+              Divider(
+                color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+              ),
+              ListTile(
+                leading: Icon(Icons.exit_to_app,
+                    color: Theme.of(context).colorScheme.secondary),
+                title: Text('Logout',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary)),
+                onTap: () {
+                  // Add your logout logic here
+                  Navigator.pop(context); // Close the drawer
+                },
+              ),
+            ],
+          ),
+        ),
       ),
       body: PageView(
         //for navigation
@@ -82,10 +168,55 @@ class _HomeViewState extends State<HomeView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  FutureBuilder(
+                    future: User.fetchUserData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            'An error occurred: ${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        );
+                      } else if (snapshot.hasData) {
+                        final User user = snapshot.data as User;
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                            left: 4,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome back,',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                              Text(
+                                '${user.name}!',
+                                style: GoogleFonts.aBeeZee(
+                                  fontSize: 24.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
                   Text(
                     'Trending Movies',
                     style: GoogleFonts.aBeeZee(
-                      fontSize: 20.0, // Adjust the font size as needed
+                      fontSize: 18.0, // Adjust the font size as needed
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -112,7 +243,7 @@ class _HomeViewState extends State<HomeView> {
                   Text(
                     'Top Rated Movies',
                     style: GoogleFonts.aBeeZee(
-                      fontSize: 20.0,
+                      fontSize: 18.0,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -139,7 +270,7 @@ class _HomeViewState extends State<HomeView> {
                   Text(
                     'Upcoming Movies',
                     style: GoogleFonts.aBeeZee(
-                      fontSize: 20.0,
+                      fontSize: 18.0,
                     ),
                   ),
                   const SizedBox(height: 8),
