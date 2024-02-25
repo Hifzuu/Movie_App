@@ -16,9 +16,6 @@ class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const backButton(),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(

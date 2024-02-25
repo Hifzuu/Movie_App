@@ -122,7 +122,7 @@ class _HomeViewState extends State<HomeView> {
                         color: Theme.of(context).colorScheme.secondary)),
                 onTap: () {
                   Navigator.pop(context); // Close the drawer
-                  // Add your navigation logic if needed
+                  _onBottomNavTapped(4);
                 },
               ),
               ListTile(
@@ -163,8 +163,8 @@ class _HomeViewState extends State<HomeView> {
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: [
-          // Reviews Page
-          ReviewsView(),
+          //search page
+          SearchView(),
           // Watched Movies Page
           WatchedMoviesView(),
           //Home Page
@@ -225,12 +225,7 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SearchView(),
-                          ),
-                        );
+                        _onBottomNavTapped(0);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -369,8 +364,8 @@ class _HomeViewState extends State<HomeView> {
             onTap: _onBottomNavTapped,
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.reviews),
-                label: 'Reviews',
+                icon: Icon(Icons.search),
+                label: 'Search',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.movie),
