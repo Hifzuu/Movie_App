@@ -74,4 +74,19 @@ class api {
 
     return moviesWithDetails;
   }
+
+  Future<List<Movie>> searchMovies(String query) async {
+    final searchUrl =
+        'https://api.themoviedb.org/3/search/movie?api_key=$apiKey&query=$query';
+
+    final response = await http.get(Uri.parse(searchUrl));
+
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      List<Movie> movies = await _getMoviesWithDetails(decodedData);
+      return movies;
+    } else {
+      throw Exception('Error searching movies');
+    }
+  }
 }

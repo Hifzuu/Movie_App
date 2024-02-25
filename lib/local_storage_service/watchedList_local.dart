@@ -8,9 +8,11 @@ class LocalStorage {
     // Retrieve the existing watched movies list from local storage
     List<String>? watchedMovies = prefs.getStringList('watched_movies') ?? [];
 
+    // Convert the Movie object to a string representation, handling null values
+    String movieString = movie.toString();
+
     // Add the new movie to the list
-    watchedMovies.add(movie
-        .toString()); // Assuming toString is implemented in your Movie class
+    watchedMovies.add(movieString);
 
     // Save the updated watched movies list back to local storage
     prefs.setStringList('watched_movies', watchedMovies);

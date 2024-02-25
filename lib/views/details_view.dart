@@ -43,9 +43,16 @@ class DetailsView extends StatelessWidget {
                       bottomRight: Radius.circular(24),
                     ),
                     child: Image.network(
-                      '${api.imagePath}${movie.posterPath}',
+                      '${api.imagePath}${movie.posterPath}' ??
+                          'fallback_image_url', // Provide a fallback image URL
                       filterQuality: FilterQuality.high,
                       fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        // Handle the error, e.g., by providing a fallback image
+                        return Image.asset(
+                            'lib/assets/images/image_not_found.jpg');
+                      },
                     ),
                   ),
                   // Play button overlay

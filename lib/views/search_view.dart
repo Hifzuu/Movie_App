@@ -1,29 +1,135 @@
 import 'package:flutter/material.dart';
-import 'package:movie_assignment/widgets/back_button.dart';
+import 'package:movie_assignment/api_service/api.dart';
+import 'package:movie_assignment/models/movie.dart';
+import 'package:movie_assignment/views/details_view.dart';
 
-class SearchView extends StatelessWidget {
+class SearchView extends StatefulWidget {
+  @override
+  _SearchViewState createState() => _SearchViewState();
+}
+
+class _SearchViewState extends State<SearchView> {
+  String _searchQuery = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            leading: const backButton(),
-            backgroundColor: Theme.of(context).colorScheme.background,
-            expandedHeight: 350,
-            pinned: true,
-            floating: true,
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [],
+      appBar: AppBar(
+        leading: const BackButton(),
+        backgroundColor: Theme.of(context).colorScheme.background,
+        title: const Text('Search Movies'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Search bar with TextField
+            TextField(
+              onChanged: (value) {
+                // Rebuild the UI on each keystroke
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: 'Search movies...',
               ),
             ),
-          ),
-        ],
+            const SizedBox(
+                height: 16), // Add some space between search bar and results
+            // Display searched movies using FutureBuilder
+            FutureBuilder<List<Movie>>(
+              future: api().searchMovies(_searchQuery),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  List<Movie> searchResults = snapshot.data!;
+                  return _buildSearchResults(searchResults);
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchResults(List<Movie> searchResults) {
+    // Your existing code for displaying search results
+    return SizedBox(
+      height: 200,
+      width: double.infinity,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: searchResults.length,
+        itemBuilder: (context, index) {
+          // Build each movie item in the list
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsView(
+                      movie: searchResults[index],
+                    ),
+                  ),
+                );
+              },
+              child: Stack(
+                children: [
+                  // Your existing code for displaying the movie poster
+                  ClipRRect(
+                    child: SizedBox(
+                      height: 200,
+                      width: 150,
+                      child: Image.network(
+                        '${api.imagePath}${searchResults[index].posterPath}' ??
+                            'fallback_image_url', // Provide a fallback image URL
+                        filterQuality: FilterQuality.high,
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) {
+                          // Handle the error, e.g., by providing a fallback image
+                          return Image.asset(
+                              'lib/assets/images/image_not_found.jpg');
+                        },
+                      ),
+                    ),
+                  ),
+                  // Display the movie title
+                  Positioned(
+                    bottom: -5,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Colors.black.withOpacity(0.7),
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        '${searchResults[index].title} (${DateTime.parse(searchResults[index].releaseDate).year})',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

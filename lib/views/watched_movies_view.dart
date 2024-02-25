@@ -41,10 +41,15 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
     if (watchedMovies == null) {
       return Center(child: CircularProgressIndicator());
     } else if (watchedMovies!.isEmpty) {
-      return Center(
+      return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('No movies added to Watched List yet.')],
+          children: [
+            Text(
+              'No movies added to watched List yet. Start adding movies from the home page.',
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
     } else {
@@ -102,11 +107,18 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      '${api.imagePath}${movie.backdropPath}',
+                      '${api.imagePath}${movie.backdropPath}' ??
+                          'fallback_image_url', // Provide a fallback image URL
                       filterQuality: FilterQuality.high,
                       fit: BoxFit.fill,
                       height: 100,
                       width: 80,
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        // Handle the error, e.g., by providing a fallback image
+                        return Image.asset(
+                            'lib/assets/images/image_not_found.jpg');
+                      },
                     ),
                   ),
                   trailing: IconButton(

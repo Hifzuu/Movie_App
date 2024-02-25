@@ -6,6 +6,7 @@ import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/models/user.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
 import 'package:movie_assignment/views/search_view.dart';
+import 'package:movie_assignment/views/settings_view.dart';
 import 'package:movie_assignment/widgets/movies_slider.dart';
 import 'package:movie_assignment/widgets/trending_slider.dart';
 import 'package:provider/provider.dart';
@@ -352,7 +353,7 @@ class _HomeViewState extends State<HomeView> {
           // To Watch Movies Page
           ToWatchMoviesView(),
           // Settings Page
-          //SettingsView(),
+          SettingsView(),
         ],
       ),
       bottomNavigationBar: Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:movie_assignment/local_storage_service/to_watch_list.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/api_service/api.dart';
@@ -42,7 +43,12 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
       return const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('No movies added to watch List yet.')],
+          children: [
+            Text(
+              'No movies added to watch List yet. Start adding movies from the home page.',
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
     } else {
@@ -100,11 +106,18 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      '${api.imagePath}${movie.backdropPath}',
+                      '${api.imagePath}${movie.backdropPath}' ??
+                          'fallback_image_url', // Provide a fallback image URL
                       filterQuality: FilterQuality.high,
                       fit: BoxFit.fill,
                       height: 100,
                       width: 80,
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        // Handle the error, e.g., by providing a fallback image
+                        return Image.asset(
+                            'lib/assets/images/image_not_found.jpg');
+                      },
                     ),
                   ),
                   trailing: IconButton(
