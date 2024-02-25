@@ -24,8 +24,7 @@ class LocalStorage {
 
     // Convert the list of strings back to a list of Movie objects
     List<Movie> toWatchMovieList =
-        toWatchMovies?.map((string) => Movie.fromString(string))?.toList() ??
-            [];
+        toWatchMovies?.map((string) => Movie.fromString(string)).toList() ?? [];
 
     return toWatchMovieList;
   }

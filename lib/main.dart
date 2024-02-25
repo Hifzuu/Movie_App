@@ -4,6 +4,7 @@ import 'package:movie_assignment/firebase_options.dart';
 import 'package:movie_assignment/theme/theme.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'views/login_view.dart';
 import 'views/home_view copy.dart';
 import 'views/signup_view.dart';
@@ -14,12 +15,14 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  ThemeProvider themeProvider = ThemeProvider();
+  await themeProvider.loadTheme();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // Initialize Firebase
   runApp(
     ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+      create: (context) => themeProvider,
       child: MyApp(),
     ),
   );

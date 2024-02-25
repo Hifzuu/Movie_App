@@ -3,6 +3,7 @@ import 'package:movie_assignment/local_storage_service/watchedList_local.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/views/details_view.dart';
+import 'package:movie_assignment/widgets/movie_title_year.dart';
 
 class WatchedMoviesView extends StatefulWidget {
   const WatchedMoviesView({super.key});
@@ -79,7 +80,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                 child: ListTile(
                   contentPadding: EdgeInsets.all(16),
                   title: Text(
-                    '${movie.title} (${DateTime.parse(movie.releaseDate).year})',
+                    getMovieTitleWithYear(movie),
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

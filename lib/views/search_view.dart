@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/details_view.dart';
+import 'package:movie_assignment/widgets/back_button.dart';
+import 'package:movie_assignment/widgets/movie_title_year.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -15,9 +17,7 @@ class _SearchViewState extends State<SearchView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(),
-        backgroundColor: Theme.of(context).colorScheme.background,
-        title: const Text('Search Movies'),
+        leading: const backButton(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
@@ -34,18 +34,22 @@ class _SearchViewState extends State<SearchView> {
               },
               decoration: InputDecoration(
                 hintText: 'Search movies...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-            const SizedBox(
+            SizedBox(
                 height: 16), // Add some space between search bar and results
             // Display searched movies using FutureBuilder
             FutureBuilder<List<Movie>>(
               future: api().searchMovies(_searchQuery),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
+                  return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.hasData) {
                   List<Movie> searchResults = snapshot.data!;
                   return _buildSearchResults(searchResults);
@@ -63,7 +67,7 @@ class _SearchViewState extends State<SearchView> {
   Widget _buildSearchResults(List<Movie> searchResults) {
     // Your existing code for displaying search results
     return SizedBox(
-      height: 200,
+      height: 267,
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -111,14 +115,17 @@ class _SearchViewState extends State<SearchView> {
                     left: 0,
                     right: 0,
                     child: Container(
-                      color: Colors.black.withOpacity(0.7),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.7),
                       padding: const EdgeInsets.all(8),
                       child: Text(
-                        '${searchResults[index].title} (${DateTime.parse(searchResults[index].releaseDate).year})',
+                        getMovieTitleWithYear(searchResults[index]),
                         style: TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.background,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,

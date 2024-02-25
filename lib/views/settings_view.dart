@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:movie_assignment/theme/theme.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
@@ -16,7 +18,7 @@ class SettingsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Theme',
               style: TextStyle(
                 fontSize: 20.0,
@@ -27,7 +29,7 @@ class SettingsView extends StatelessWidget {
             _buildThemeSwitch(context, themeProvider),
             Divider(),
             SizedBox(height: 16.0),
-            Text(
+            const Text(
               'Notifications',
               style: TextStyle(
                 fontSize: 20.0,
@@ -38,7 +40,7 @@ class SettingsView extends StatelessWidget {
             _buildNotificationSwitch(context),
             Divider(),
             SizedBox(height: 16.0),
-            Text(
+            const Text(
               'About',
               style: TextStyle(
                 fontSize: 20.0,
@@ -71,8 +73,8 @@ class SettingsView extends StatelessWidget {
   Widget _buildNotificationSwitch(BuildContext context) {
     return Row(
       children: [
-        Text('Receive Notifications'),
-        Spacer(),
+        const Text('Receive Notifications'),
+        const Spacer(),
         Switch(
           value: true, // Replace with your notification logic
           onChanged: (value) {
@@ -84,7 +86,7 @@ class SettingsView extends StatelessWidget {
   }
 
   Widget _buildAboutSection() {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Version: 1.0.0'),

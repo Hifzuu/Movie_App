@@ -8,14 +8,16 @@ class LocalStorage {
     // Retrieve the existing watched movies list from local storage
     List<String>? watchedMovies = prefs.getStringList('watched_movies') ?? [];
 
-    // Convert the Movie object to a string representation, handling null values
-    String movieString = movie.toString();
+    print('Existing watched movies: $watchedMovies');
 
     // Add the new movie to the list
-    watchedMovies.add(movieString);
+    watchedMovies.add(movie.toString());
+
+    print('Updated watched movies list: $watchedMovies');
 
     // Save the updated watched movies list back to local storage
     prefs.setStringList('watched_movies', watchedMovies);
+    print('Watched movies list saved to local storage');
   }
 
   static Future<List<Movie>> getWatchedListLocally() async {
@@ -25,14 +27,10 @@ class LocalStorage {
     List<String>? watchedMovies = prefs.getStringList('watched_movies');
 
     // Convert the list of strings back to a list of Movie objects
-    List<Movie> watchedMoviesList = watchedMovies?.map((string) {
-          Movie movie = Movie.fromString(string);
-          //print('Movie details from local storage: ${movie.toString()}');
-          return movie;
-        }).toList() ??
-        [];
+    List<Movie> watchedMovieList =
+        watchedMovies?.map((string) => Movie.fromString(string)).toList() ?? [];
 
-    return watchedMoviesList;
+    return watchedMovieList;
   }
 
   static Future<void> removeFromWatchedListLocally(int movieId) async {

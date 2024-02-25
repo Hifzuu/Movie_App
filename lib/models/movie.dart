@@ -10,7 +10,7 @@ class Movie {
   String releaseDate;
   double voteAverage;
   int duration;
-  List<Trailer> trailers;
+  List<Trailer>? trailers;
 
   Movie({
     required this.id,
@@ -22,7 +22,7 @@ class Movie {
     required this.releaseDate,
     required this.voteAverage,
     required this.duration,
-    required this.trailers,
+    this.trailers,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
@@ -51,7 +51,7 @@ class Movie {
 
   String toString() {
     String trailersString =
-        trailers.map((trailer) => trailer.toString()).join(",");
+        trailers!.map((trailer) => trailer.toString()).join(",");
     return '$id|$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration|$trailersString';
   }
 
@@ -77,14 +77,27 @@ class Movie {
         trailers: trailers,
       );
     } catch (e) {
-      // Add a print statement to debug
+      // Print a debug statement
       print('Error creating Movie from string: $string\nError: $e');
-      rethrow;
+
+      // Return an empty Movie object or your default values
+      return Movie(
+        id: 0,
+        title: '',
+        backdropPath: '',
+        originalTitle: '',
+        overview: '',
+        posterPath: '',
+        releaseDate: '',
+        voteAverage: 0.0,
+        duration: 0,
+        trailers: [],
+      );
     }
   }
 
   String? get trailerKey {
     // Return the key of the first trailer, or null if there are no trailers
-    return trailers.isNotEmpty ? trailers[0].key : null;
+    return trailers!.isNotEmpty ? trailers![0].key : null;
   }
 }

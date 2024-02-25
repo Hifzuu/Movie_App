@@ -122,8 +122,7 @@ class _LoginFormState extends State<LoginForm> {
             suffixIcon: IconButton(
               icon: Icon(
                 _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                color: Theme.of(context)
-                    .primaryColorDark, // Adjust color as needed
+                color: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: () {
                 setState(() {
