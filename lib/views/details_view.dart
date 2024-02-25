@@ -65,8 +65,9 @@ class DetailsView extends StatelessWidget {
                         if (videoKey != null) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  TrailerScreen(videoKey: videoKey),
+                              builder: (context) => TrailerScreen(
+                                movieId: movie.id,
+                              ),
                             ),
                           );
                         } else {

@@ -10,42 +10,69 @@ class LocalStorage {
 
     print('Existing watched movies: $watchedMovies');
 
-    // Add the new movie to the list
-    watchedMovies.add(movie.toString());
+    try {
+      // Convert the movie to a string representation
+      String movieString = movie.toString();
 
-    print('Updated watched movies list: $watchedMovies');
+      // Add the new movie to the list
+      watchedMovies.add(movieString);
 
-    // Save the updated watched movies list back to local storage
-    prefs.setStringList('watched_movies', watchedMovies);
-    print('Watched movies list saved to local storage');
+      print('Updated watched movies list: $watchedMovies');
+
+      // Save the updated watched movies list back to local storage
+      prefs.setStringList('watched_movies', watchedMovies);
+      print('Watched movies list saved to local storage');
+    } catch (e) {
+      // Handle any potential error during the process
+      print('Error adding movie to watched list: $e');
+    }
   }
 
   static Future<List<Movie>> getWatchedListLocally() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // Retrieve the watched movies list from local storage
-    List<String>? watchedMovies = prefs.getStringList('watched_movies');
+    try {
+      // Retrieve the watched movies list from local storage
+      List<String>? watchedMovies = prefs.getStringList('watched_movies');
 
-    // Convert the list of strings back to a list of Movie objects
-    List<Movie> watchedMovieList =
-        watchedMovies?.map((string) => Movie.fromString(string)).toList() ?? [];
+      // Check if the watchedMovies list is not null
+      if (watchedMovies != null) {
+        // Convert the list of strings back to a list of Movie objects
+        List<Movie> watchedMovieList =
+            watchedMovies.map((string) => Movie.fromString(string)).toList();
 
-    return watchedMovieList;
+        return watchedMovieList;
+      } else {
+        // Return an empty list if watchedMovies is null
+        return [];
+      }
+    } catch (e) {
+      // Handle any potential error during the process
+      print('Error getting watched movies list: $e');
+
+      // Return an empty list in case of an error
+      return [];
+    }
   }
 
   static Future<void> removeFromWatchedListLocally(int movieId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // Retrieve the existing watched movies list from local storage
-    List<String>? watchedMovies = prefs.getStringList('watched_movies') ?? [];
+    try {
+      // Retrieve the existing watched movies list from local storage
+      List<String>? watchedMovies = prefs.getStringList('watched_movies') ?? [];
 
-    // Remove the movie with the specified ID from the list
-    watchedMovies = watchedMovies.where((watchedMovie) {
-      Movie movie = Movie.fromString(watchedMovie);
-      return movie.id != movieId;
-    }).toList();
+      // Remove the movie with the specified ID from the list
+      watchedMovies = watchedMovies.where((watchedMovie) {
+        Movie movie = Movie.fromString(watchedMovie);
+        return movie.id != movieId;
+      }).toList();
 
-    // Save the updated watched movies list back to local storage
-    prefs.setStringList('watched_movies', watchedMovies);
+      // Save the updated watched movies list back to local storage
+      prefs.setStringList('watched_movies', watchedMovies);
+    } catch (e) {
+      // Handle any potential error during the process
+      print('Error removing movie from watched list: $e');
+    }
   }
 }

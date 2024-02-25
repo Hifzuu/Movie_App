@@ -22,19 +22,20 @@ class Trailer {
 
   String toString() {
     // Convert the Trailer object to a string representation
-    return '$name,$key,$site,$type';
+    return '$name|*|$key|*|$site|*|$type';
   }
 
   factory Trailer.fromString(String string) {
-    // Check if the string contains the expected separator
-    if (!string.contains(',')) {
-      throw FormatException('Invalid string format for Trailer');
-    }
-
-    // Create a Trailer object from a string representation
-    List<String> parts = string.split(',');
-
     try {
+      if (string.toLowerCase() == 'teaser') {
+        // Skip processing for specific values like "Teaser"
+        print('Skipped processing for value: $string');
+        return Trailer(key: '', name: '', site: '', type: '');
+      }
+
+      List<String> parts = string.split('|*|');
+
+      // Check if the parts list has the expected number of components
       if (parts.length >= 4) {
         return Trailer(
           name: parts[0],
@@ -43,15 +44,14 @@ class Trailer {
           type: parts[3],
         );
       } else {
-        throw FormatException('Invalid string format for Trailer');
+        // Handle the case where the input string is not in the expected format
+        print('Error: Invalid format for Trailer: $string');
+        return Trailer(key: '', name: '', site: '', type: '');
       }
     } catch (e) {
-      // Handle the exception, print or log the problematic string
+      // Handle other potential errors during the process
       print('Error creating Trailer from string: $string\nError: $e');
-
-      // You can return a default Trailer or rethrow the exception based on your use case
-      // return Trailer(name: '', key: '', site: '', type: '');
-      rethrow;
+      return Trailer(key: '', name: '', site: '', type: '');
     }
   }
 }

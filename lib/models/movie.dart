@@ -1,16 +1,16 @@
 import 'package:movie_assignment/models/trailer.dart';
 
 class Movie {
-  int id;
-  String title;
-  String backdropPath;
-  String originalTitle;
-  String overview;
-  String posterPath;
-  String releaseDate;
-  double voteAverage;
-  int duration;
-  List<Trailer>? trailers;
+  final int id;
+  final String title;
+  final String backdropPath;
+  final String originalTitle;
+  final String overview;
+  final String posterPath;
+  final String releaseDate;
+  final double voteAverage;
+  final int duration;
+  List<Trailer> trailers;
 
   Movie({
     required this.id,
@@ -22,7 +22,7 @@ class Movie {
     required this.releaseDate,
     required this.voteAverage,
     required this.duration,
-    this.trailers,
+    required this.trailers,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
@@ -35,6 +35,7 @@ class Movie {
         return Trailer.fromJson(trailerJson);
       }).toList();
     }
+
     return Movie(
       id: json['id'] as int? ?? 0,
       title: json["title"] ?? "",
@@ -51,16 +52,17 @@ class Movie {
 
   String toString() {
     String trailersString =
-        trailers!.map((trailer) => trailer.toString()).join(",");
+        trailers.map((trailer) => trailer.toString()).join("|*|");
     return '$id|$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration|$trailersString';
   }
 
   factory Movie.fromString(String string) {
-    // Create a Movie object from a string representation
     try {
       List<String> parts = string.split('|');
-      List<Trailer> trailers = parts[9]
-          .split('|')
+
+      // Assuming trailers are the last part in the string
+      List<Trailer> trailers = parts.last
+          .split('|*|')
           .map((trailerString) => Trailer.fromString(trailerString))
           .toList();
 
@@ -77,13 +79,11 @@ class Movie {
         trailers: trailers,
       );
     } catch (e) {
-      // Print a debug statement
+      // Handle other potential errors during the process
       print('Error creating Movie from string: $string\nError: $e');
-
-      // Return an empty Movie object or your default values
       return Movie(
         id: 0,
-        title: '',
+        title: 'Invalid Movie',
         backdropPath: '',
         originalTitle: '',
         overview: '',
@@ -97,7 +97,6 @@ class Movie {
   }
 
   String? get trailerKey {
-    // Return the key of the first trailer, or null if there are no trailers
-    return trailers!.isNotEmpty ? trailers![0].key : null;
+    return trailers.isNotEmpty ? trailers[0].key : null;
   }
 }

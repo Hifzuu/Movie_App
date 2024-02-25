@@ -89,4 +89,23 @@ class api {
       throw Exception('Error searching movies');
     }
   }
+
+  Future<String> getMovieTrailerKey(int movieId) async {
+    final response = await http.get(
+      Uri.parse(
+        'https://api.themoviedb.org/3/movie/$movieId/videos?api_key=$apiKey',
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      if (decodedData.isNotEmpty) {
+        return decodedData[0]['key'];
+      } else {
+        throw Exception('No trailer available for this movie.');
+      }
+    } else {
+      throw Exception('Failed to load movie trailer key');
+    }
+  }
 }
