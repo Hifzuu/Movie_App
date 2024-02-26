@@ -3,6 +3,7 @@ import 'package:movie_assignment/local_storage_service/watchedList_local.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/views/details_view.dart';
+import 'package:movie_assignment/widgets/get_movie_image.dart';
 import 'package:movie_assignment/widgets/movie_title_year.dart';
 
 class WatchedMoviesView extends StatefulWidget {
@@ -79,7 +80,8 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                   );
                 },
                 child: ListTile(
-                  contentPadding: EdgeInsets.all(16),
+                  contentPadding:
+                      EdgeInsets.only(left: 18, right: 18, bottom: 18),
                   title: Text(
                     getMovieTitleWithYear(movie),
                     style: const TextStyle(
@@ -90,39 +92,53 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Rating: ${movie.voteAverage.toStringAsFixed(1)}/10',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(
+                                top: 2), // Adjust the top padding as needed
+                            child: const Icon(
+                              Icons.star,
+                              size: 16,
+                              color: Colors.amber,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Rating: ${movie.voteAverage.toStringAsFixed(1)}/10',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        'Duration: ${movie.duration} minutes',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey,
-                        ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(
+                                top: 2), // Adjust the top padding as needed
+                            child: const Icon(
+                              Icons.timer,
+                              size: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Duration: ${movie.duration} minutes',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      '${api.imagePath}${movie.backdropPath}' ??
-                          'fallback_image_url', // Provide a fallback image URL
-                      filterQuality: FilterQuality.high,
-                      fit: BoxFit.fill,
-                      height: 100,
-                      width: 80,
-                      errorBuilder: (BuildContext context, Object error,
-                          StackTrace? stackTrace) {
-                        // Handle the error, e.g., by providing a fallback image
-                        return Image.asset(
-                            'lib/assets/images/image_not_found.jpg');
-                      },
-                    ),
-                  ),
+                  leading: MovieImageWidget(movie: movie),
                   trailing: IconButton(
                     icon: Icon(Icons.remove_circle_outline),
                     color: Colors.red,

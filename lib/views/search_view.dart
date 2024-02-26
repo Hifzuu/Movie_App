@@ -4,6 +4,7 @@ import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/details_view.dart';
 import 'package:movie_assignment/widgets/back_button.dart';
 import 'package:movie_assignment/widgets/movie_title_year.dart';
+import 'package:movie_assignment/widgets/get_movie_image.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -85,42 +86,36 @@ class _SearchViewState extends State<SearchView> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                subtitle: Column(
+                subtitle: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: 2), // Adjust the top padding as needed
+                      child: Icon(
+                        Icons.star,
+                        size: 16,
+                        color: Colors.amber,
+                      ),
+                    ),
+                    SizedBox(width: 4),
                     Text(
                       'Rating: ${movie.voteAverage.toStringAsFixed(1)}/10',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey,
                       ),
                     ),
-                    Text(
-                      'Duration: ${movie.duration} minutes',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
+                    // Text(
+                    //   'Duration: ${movie.duration} minutes',
+                    //   style: const TextStyle(
+                    //     fontSize: 14,
+                    //     color: Colors.grey,
+                    //   ),
+                    // ),
                   ],
                 ),
-                leading: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    '${api.imagePath}${movie.backdropPath}' ??
-                        'fallback_image_url', // Provide a fallback image URL
-                    filterQuality: FilterQuality.high,
-                    fit: BoxFit.fill,
-                    height: 100,
-                    width: 80,
-                    errorBuilder: (BuildContext context, Object error,
-                        StackTrace? stackTrace) {
-                      // Handle the error, e.g., by providing a fallback image
-                      return Image.asset(
-                          'lib/assets/images/image_not_found.jpg');
-                    },
-                  ),
-                ),
+                leading: MovieImageWidget(movie: movie),
                 trailing: Icon(
                   Icons.more_horiz,
                   color: Theme.of(context).colorScheme.secondary,
