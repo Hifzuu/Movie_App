@@ -33,6 +33,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Watched Movies'),
+        automaticallyImplyLeading: false,
       ),
       body: buildBody(),
     );

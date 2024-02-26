@@ -3,6 +3,11 @@ import 'package:movie_assignment/models/movie.dart';
 String getMovieTitleWithYear(Movie movie) {
   String title = movie.title ?? 'Unknown Title';
 
+  // Limit title to 2 lines
+  if (title.length > 30) {
+    title = title.substring(0, 30) + '...';
+  }
+
   String releaseYear = '(Unknown Year)';
   if (movie.releaseDate != null) {
     try {
@@ -13,5 +18,6 @@ String getMovieTitleWithYear(Movie movie) {
     }
   }
 
-  return '$title $releaseYear';
+  // Concatenate title and releaseYear
+  return '$title\n$releaseYear';
 }

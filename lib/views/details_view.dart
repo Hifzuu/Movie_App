@@ -44,8 +44,7 @@ class DetailsView extends StatelessWidget {
                       bottomRight: Radius.circular(24),
                     ),
                     child: Image.network(
-                      '${api.imagePath}${movie.posterPath}' ??
-                          'fallback_image_url', // Provide a fallback image URL
+                      '${api.imagePath}${movie.posterPath}',
                       filterQuality: FilterQuality.high,
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object error,

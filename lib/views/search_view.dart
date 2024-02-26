@@ -62,16 +62,9 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget _buildSearchResults(List<Movie> searchResults) {
-    // Your existing code for displaying search results
-    return SizedBox(
-      height: 267,
-      width: double.infinity,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: searchResults.length,
-        itemBuilder: (context, index) {
-          // Build each movie item in the list
+    return Expanded(
+      child: ListView(
+        children: searchResults.map((movie) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
@@ -79,61 +72,63 @@ class _SearchViewState extends State<SearchView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailsView(
-                      movie: searchResults[index],
-                    ),
+                    builder: (context) => DetailsView(movie: movie),
                   ),
                 );
               },
-              child: Stack(
-                children: [
-                  // Your existing code for displaying the movie poster
-                  ClipRRect(
-                    child: SizedBox(
-                      height: 200,
-                      width: 150,
-                      child: Image.network(
-                        '${api.imagePath}${searchResults[index].posterPath}' ??
-                            'fallback_image_url', // Provide a fallback image URL
-                        filterQuality: FilterQuality.high,
-                        fit: BoxFit.cover,
-                        errorBuilder: (BuildContext context, Object error,
-                            StackTrace? stackTrace) {
-                          // Handle the error, e.g., by providing a fallback image
-                          return Image.asset(
-                              'lib/assets/images/image_not_found.jpg');
-                        },
+              child: ListTile(
+                contentPadding: EdgeInsets.all(16),
+                title: Text(
+                  getMovieTitleWithYear(movie),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Rating: ${movie.voteAverage.toStringAsFixed(1)}/10',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
                       ),
                     ),
-                  ),
-                  // Display the movie title
-                  Positioned(
-                    bottom: -5,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(0.7),
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        getMovieTitleWithYear(searchResults[index]),
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.background,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                    Text(
+                      'Duration: ${movie.duration} minutes',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
                       ),
                     ),
+                  ],
+                ),
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    '${api.imagePath}${movie.backdropPath}' ??
+                        'fallback_image_url', // Provide a fallback image URL
+                    filterQuality: FilterQuality.high,
+                    fit: BoxFit.fill,
+                    height: 100,
+                    width: 80,
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      // Handle the error, e.g., by providing a fallback image
+                      return Image.asset(
+                          'lib/assets/images/image_not_found.jpg');
+                    },
                   ),
-                ],
+                ),
+                trailing: Icon(
+                  Icons.more_horiz,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
               ),
             ),
           );
-        },
+        }).toList(),
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:movie_assignment/views/login_view.dart';
@@ -10,61 +12,87 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoginScaffold(
-      child: Column(
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      body: Stack(
         children: [
-          Flexible(
-            flex: 8,
+          Image.asset(
+            'lib/assets/images/bg.jpg',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.black.withOpacity(0.6),
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: 40,
-              ),
-              child: Center(
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(children: [
-                    TextSpan(
-                      text: 'Welcome User!\n',
-                      style: TextStyle(
-                        fontSize: 45,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    TextSpan(
-                      text:
-                          '\n Dive into a Cinematic Adventure! Track and discover movies that match your mood. Your movie sanctuary awaits – where every watchlist is a blockbuster journey! Welcome to your personalised movie haven.',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.transparent,
             ),
           ),
-          Flexible(
-            flex: 1,
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Row(
-                children: [
-                  Expanded(
-                      child: WelcomeButton(
-                    buttonText: 'Log In',
-                    onTap: LoginView(),
-                    color: Colors.transparent,
-                    textColor: Colors.white,
-                  )),
-                  Expanded(
-                      child: WelcomeButton(
-                    buttonText: 'Sign Up',
-                    onTap: SignupView(),
-                    color: Colors.white,
-                    textColor: Theme.of(context).colorScheme.primary,
-                  )),
-                ],
-              ),
+          SafeArea(
+            child: Column(
+              children: [
+                Flexible(
+                  flex: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 0,
+                      horizontal: 40,
+                    ),
+                    child: Center(
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: const TextSpan(children: [
+                          TextSpan(
+                            text: 'Welcome User!\n',
+                            style: TextStyle(
+                              fontSize: 45,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          TextSpan(
+                            text:
+                                '\n Welcome to your personalised movie haven. Dive into a cinematic adventure, track and discover movies that match your mood!',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: WelcomeButton(
+                          buttonText: 'Log In',
+                          onTap: LoginView(),
+                          color: Colors.transparent,
+                          textColor: Colors.white,
+                        )),
+                        Expanded(
+                            child: WelcomeButton(
+                          buttonText: 'Sign Up',
+                          onTap: SignupView(),
+                          color: Colors.white,
+                          textColor: Theme.of(context).colorScheme.primary,
+                        )),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

@@ -32,6 +32,7 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('To - Watch Movies'),
+        automaticallyImplyLeading: false,
       ),
       body: buildBody(),
     );

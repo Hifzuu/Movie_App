@@ -61,7 +61,7 @@ class _LoginFormState extends State<LoginForm> {
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
       // Handle FirebaseAuth exceptions
-      String errorMessage = 'An error occurred. Please try again.';
+      String errorMessage = 'Log in failed. Please try again.';
 
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         errorMessage = 'Invalid credentials';
@@ -110,7 +110,7 @@ class _LoginFormState extends State<LoginForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
+        const Expanded(
           flex: 1,
           child: SizedBox(
             height: 10,
@@ -119,10 +119,10 @@ class _LoginFormState extends State<LoginForm> {
         Expanded(
           flex: 6,
           child: Container(
-            padding: EdgeInsets.fromLTRB(25, 50, 25, 20),
+            padding: const EdgeInsets.fromLTRB(25, 50, 25, 20),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(40),
                 topRight: Radius.circular(40),
               ),
@@ -133,14 +133,14 @@ class _LoginFormState extends State<LoginForm> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Get Started',
+                      'Log In',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w900,
                         color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -151,13 +151,13 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     TextFormField(
                       controller: _passwordController,
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        prefixIcon: Icon(Icons.lock),
+                        prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _isPasswordVisible
@@ -231,7 +231,7 @@ class _LoginFormState extends State<LoginForm> {
                           ),
                           padding:
                               MaterialStateProperty.all<EdgeInsetsGeometry>(
-                            EdgeInsets.symmetric(vertical: 16.0),
+                            const EdgeInsets.symmetric(vertical: 16.0),
                           ),
                         ),
                         child: const Text(
