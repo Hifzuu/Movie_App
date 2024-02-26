@@ -28,6 +28,7 @@ dependencies:
   webview_flutter: ^4.7.0
   flutter_inappwebview: ^6.0.0
   icons_plus: ^5.0.0
+  lottie: ^3.1.0
   
 
 
@@ -41,4 +42,5 @@ flutter:
 
   assets:
     - lib/assets/images/
+    - lib/assets/json/
     

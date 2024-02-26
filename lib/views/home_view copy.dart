@@ -249,6 +249,8 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   const SizedBox(height: 32),
+                  //
+                  const SizedBox(height: 32),
                   Text(
                     'Top Rated Movies',
                     style: GoogleFonts.aBeeZee(
