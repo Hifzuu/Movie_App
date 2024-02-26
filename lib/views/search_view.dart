@@ -30,16 +30,26 @@ class _SearchViewState extends State<SearchView> {
                   _searchQuery = value;
                 });
               },
+              style: TextStyle(color: Theme.of(context).colorScheme.background),
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.secondary,
                 hintText: 'Search movies...',
-                prefixIcon: Icon(Icons.search),
+                hintStyle: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .background), // Corrected line
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Theme.of(context).colorScheme.background,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
-            SizedBox(
-                height: 16), // Add some space between search bar and results
+
+            const SizedBox(height: 16),
             // Display searched movies using FutureBuilder
             FutureBuilder<List<Movie>>(
               future: api().searchMovies(_searchQuery),
