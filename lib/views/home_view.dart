@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'watched_movies_view.dart';
 import 'to-watch_movies_view.dart';
-import 'reviews_view.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -141,7 +140,7 @@ class _HomeViewState extends State<HomeView>
           : IndexedStack(
               index: _currentIndex,
               children: [
-                ReviewsView(),
+                //ReviewsView(),
                 WatchedMoviesView(),
                 const Center(
                   child: Text(

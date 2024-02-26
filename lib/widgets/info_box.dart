@@ -35,17 +35,17 @@ class InfoBox extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: GoogleFonts.aBeeZee(
+                style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               Text(
                 value,
-                style: GoogleFonts.aBeeZee(
+                style: TextStyle(
                   fontSize: 14,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
               ),

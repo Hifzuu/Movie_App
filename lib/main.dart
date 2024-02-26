@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/firebase_options.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
+import 'package:movie_assignment/views/search_view.dart';
 import 'package:movie_assignment/views/splash_screen.dart';
 import 'package:movie_assignment/views/welcome_view.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,6 @@ import 'views/home_view copy.dart';
 import 'views/signup_view.dart';
 import 'views/watched_movies_view.dart';
 import 'views/to-watch_movies_view.dart';
-import 'views/reviews_view.dart';
 import 'views/settings_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => SignupView(),
         '/watched_movies': (context) => WatchedMoviesView(),
         '/to_watch_movies': (context) => ToWatchMoviesView(),
-        '/reviews': (context) => ReviewsView(),
         '/settings': (context) => SettingsView(),
+        '/search': (context) => SearchView(),
       },
     );
   }

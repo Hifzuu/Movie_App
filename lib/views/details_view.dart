@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/local_storage_service/watchedList_local.dart'
@@ -114,14 +116,23 @@ class DetailsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    getMovieTitleWithYear(movie),
+                    '${movie.title} (${DateTime.parse(movie.releaseDate!).year})',
                     style: GoogleFonts.amiko(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 0),
+                  Row(
+                    children: [
+                      Text(movie.genres,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ))
+                    ],
+                  ),
+                  const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -145,18 +156,9 @@ class DetailsView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Description',
-                    style: GoogleFonts.aBeeZee(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
                     movie.overview,
-                    style: GoogleFonts.aBeeZee(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: 17,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     textAlign: TextAlign.justify,
@@ -386,21 +388,89 @@ class DetailsView extends StatelessWidget {
                         ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'need to add more details e.g actors or movie revenue',
-                    style: GoogleFonts.aBeeZee(
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    textAlign: TextAlign.justify,
-                  ),
+                  const SizedBox(height: 20),
+                  FutureBuilder<List<Movie>>(
+                    future: api().getSimilarMovies(movie.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: SpinKitCircle(
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 50.0,
+                          ),
+                        );
+                      } else if (snapshot.hasData) {
+                        List<Movie> similarMovies = snapshot.data!;
+                        print('Similar Movies API Response: $similarMovies');
+                        return _buildSimilarMoviesList(similarMovies);
+                      } else if (snapshot.hasError) {
+                        print(
+                            'Error fetching similar movies: ${snapshot.error}');
+                        return Text(
+                            'Error fetching similar movies: ${snapshot.error}');
+                      } else {
+                        return SizedBox.shrink();
+                      }
+                    },
+                  )
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSimilarMoviesList(List<Movie> similarMovies) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Similar recommendations',
+          style: GoogleFonts.amiko(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: 15,
+            crossAxisSpacing: 5,
+            childAspectRatio: 1.5 / 2,
+          ),
+          itemCount:
+              similarMovies.length, // Add this line to specify the item count
+          itemBuilder: (context, index) {
+            if (index < similarMovies.length) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailsView(
+                        movie: similarMovies[index],
+                      ),
+                    ),
+                  );
+                },
+                child: CachedNetworkImage(
+                  imageUrl:
+                      '${api.imagePath}${similarMovies[index].posterPath}',
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  fit: BoxFit.cover,
+                ),
+              );
+            } else {
+              return Container(); // Return an empty container or handle it based on your use case
+            }
+          },
+        ),
+      ],
     );
   }
 }

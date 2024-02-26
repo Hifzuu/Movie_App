@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_assignment/local_storage_service/to_watch_list.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/api_service/api.dart';
@@ -41,7 +42,12 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
 
   Widget buildBody() {
     if (toWatchMovies == null) {
-      return Center(child: CircularProgressIndicator());
+      return Center(
+        child: SpinKitCircle(
+          color: Theme.of(context).colorScheme.primary,
+          size: 50.0,
+        ),
+      );
     } else if (toWatchMovies!.isEmpty) {
       return const Center(
         child: Column(

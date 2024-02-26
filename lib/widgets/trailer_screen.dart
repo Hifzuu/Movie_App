@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/widgets/back_button.dart';
@@ -80,7 +81,10 @@ class _TrailerScreenState extends State<TrailerScreen> {
               },
             )
           : Center(
-              child: CircularProgressIndicator(),
+              child: SpinKitCircle(
+                color: Theme.of(context).colorScheme.primary,
+                size: 50.0,
+              ),
             ),
     );
   }

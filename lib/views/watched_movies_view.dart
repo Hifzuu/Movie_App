@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_assignment/local_storage_service/watchedList_local.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/api_service/api.dart';
@@ -42,7 +43,12 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
 
   Widget buildBody() {
     if (watchedMovies == null) {
-      return Center(child: CircularProgressIndicator());
+      return Center(
+        child: SpinKitCircle(
+          color: Theme.of(context).colorScheme.primary,
+          size: 50.0,
+        ),
+      );
     } else if (watchedMovies!.isEmpty) {
       return const Center(
         child: Column(

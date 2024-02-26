@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/details_view.dart';
-import 'package:movie_assignment/widgets/back_button.dart';
-import 'package:movie_assignment/widgets/movie_title_year.dart';
 import 'package:movie_assignment/widgets/get_movie_image.dart';
+import 'package:movie_assignment/widgets/movie_title_year.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -23,46 +24,39 @@ class _SearchViewState extends State<SearchView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Search bar with TextField
-            TextField(
+            CupertinoSearchTextField(
               onChanged: (value) {
                 // Rebuild the UI on each keystroke
                 setState(() {
                   _searchQuery = value;
                 });
               },
-              style: TextStyle(color: Theme.of(context).colorScheme.background),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Theme.of(context).colorScheme.secondary,
-                hintText: 'Search movies...',
-                hintStyle: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .background), // Corrected line
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Theme.of(context).colorScheme.background,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
             ),
 
             const SizedBox(height: 16),
-            // Display searched movies using FutureBuilder
+
+            // Display searched movies or top searches
             FutureBuilder<List<Movie>>(
-              future: api().searchMovies(_searchQuery),
+              future: _searchQuery.isEmpty
+                  ? api()
+                      .getPopularMovies() // Display top searches if no search query
+                  : api().searchMovies(_searchQuery),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: SpinKitCircle(
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 50.0,
+                    ),
+                  );
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (snapshot.hasData) {
                   List<Movie> searchResults = snapshot.data!;
                   return _buildSearchResults(searchResults);
                 } else {
-                  return SizedBox.shrink();
+                  return const SizedBox.shrink();
                 }
               },
             ),
@@ -74,66 +68,103 @@ class _SearchViewState extends State<SearchView> {
 
   Widget _buildSearchResults(List<Movie> searchResults) {
     return Expanded(
-      child: ListView(
-        children: searchResults.map((movie) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailsView(movie: movie),
-                  ),
-                );
-              },
-              child: ListTile(
-                contentPadding: EdgeInsets.all(16),
-                title: Text(
-                  getMovieTitleWithYear(movie),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                          top: 2), // Adjust the top padding as needed
-                      child: Icon(
-                        Icons.star,
-                        size: 16,
-                        color: Colors.amber,
-                      ),
-                    ),
-                    SizedBox(width: 4),
-                    Text(
-                      'Rating: ${movie.voteAverage.toStringAsFixed(1)}/10',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    // Text(
-                    //   'Duration: ${movie.duration} minutes',
-                    //   style: const TextStyle(
-                    //     fontSize: 14,
-                    //     color: Colors.grey,
-                    //   ),
-                    // ),
-                  ],
-                ),
-                leading: MovieImageWidget(movie: movie),
-                trailing: Icon(
-                  Icons.more_horiz,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (_searchQuery
+              .isEmpty) // Show "Top Searches" text only if no search query
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Top Searches',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
-          );
-        }).toList(),
+          if (_searchQuery.isEmpty) // Show top searches in a ListView
+            Expanded(
+              child: ListView.builder(
+                itemCount: searchResults.length,
+                itemBuilder: (context, index) {
+                  Movie movie = searchResults[index];
+                  return ListTile(
+                    contentPadding: EdgeInsets.all(8),
+                    leading: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: MovieImageWidget(movie: movie),
+                    ),
+                    title: Text(
+                      getMovieTitleWithYear(movie) ?? 'Unknown Title',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsView(movie: movie),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          if (_searchQuery.isNotEmpty) // Show searched movies in a GridView
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                itemCount: searchResults.length,
+                itemBuilder: (context, index) {
+                  Movie movie = searchResults[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsView(movie: movie),
+                        ),
+                      );
+                    },
+                    child: GridTile(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: MovieImageWidget(movie: movie),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              getMovieTitleWithYear(movie) ?? 'Unknown Title',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+        ],
       ),
     );
   }

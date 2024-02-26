@@ -11,6 +11,7 @@ class Movie {
   final double voteAverage;
   final int duration;
   List<Trailer> trailers;
+  String genres;
 
   Movie({
     required this.id,
@@ -23,18 +24,25 @@ class Movie {
     required this.voteAverage,
     required this.duration,
     required this.trailers,
+    required this.genres,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
-    Map<String, dynamic>? videosJson = json['videos'] as Map<String, dynamic>?;
-
     List<Trailer> trailers = [];
-    if (videosJson != null) {
-      List<dynamic> trailersJson = videosJson['results'];
+
+    // Check if "videos" key is present in the JSON
+    if (json.containsKey('videos')) {
+      // Assuming trailers are under "results" key
+      List<dynamic> trailersJson = json['videos']['results'];
+
+      // Parse trailers
       trailers = trailersJson.map((trailerJson) {
         return Trailer.fromJson(trailerJson);
       }).toList();
     }
+
+    List<dynamic> genreList = json['genres'];
+    String genresString = genreList.map((genre) => genre['name']).join(', ');
 
     return Movie(
       id: json['id'] as int? ?? 0,
@@ -46,6 +54,7 @@ class Movie {
       releaseDate: json["release_date"]?.toString() ?? "",
       voteAverage: json["vote_average"]?.toDouble() ?? 0.0,
       duration: json["runtime"] as int? ?? 0,
+      genres: genresString,
       trailers: trailers,
     );
   }
@@ -53,7 +62,7 @@ class Movie {
   String toString() {
     String trailersString =
         trailers.map((trailer) => trailer.toString()).join("|*|");
-    return '$id|$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration|$trailersString';
+    return '$id|$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration|$genres|$trailersString';
   }
 
   factory Movie.fromString(String string) {
@@ -76,6 +85,7 @@ class Movie {
         releaseDate: parts[6],
         voteAverage: double.parse(parts[7]),
         duration: int.parse(parts[8]),
+        genres: parts[9],
         trailers: trailers,
       );
     } catch (e) {
@@ -91,6 +101,7 @@ class Movie {
         releaseDate: '',
         voteAverage: 0.0,
         duration: 0,
+        genres: '',
         trailers: [],
       );
     }

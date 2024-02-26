@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:movie_assignment/views/welcome_view.dart';
@@ -21,7 +19,20 @@ class _SplashScreenState extends State<SplashScreen> {
       () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => WelcomeView()),
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                const WelcomeView(),
+            transitionsBuilder: (context, animation1, animation2, child) {
+              var fadeTween = Tween<double>(begin: 0.0, end: 1.0);
+              var fadeAnimation = animation1.drive(fadeTween);
+
+              return FadeTransition(
+                opacity: fadeAnimation,
+                child: child,
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 500),
+          ),
         );
       },
     );

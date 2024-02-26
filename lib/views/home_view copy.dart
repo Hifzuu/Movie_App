@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as signOut;
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/models/movie.dart';
@@ -12,7 +13,6 @@ import 'package:movie_assignment/widgets/trending_slider.dart';
 import 'package:provider/provider.dart';
 import 'watched_movies_view.dart';
 import 'to-watch_movies_view.dart';
-import 'reviews_view.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -77,6 +77,20 @@ class _HomeViewState extends State<HomeView> {
         ),
         title: Text("WATCHPILOT", style: GoogleFonts.alef()),
         centerTitle: true,
+        actions: [
+          InkWell(
+            onTap: () {
+              _onBottomNavTapped(0);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.search,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          )
+        ],
       ),
       drawer: Drawer(
         child: Container(
@@ -242,8 +256,12 @@ class _HomeViewState extends State<HomeView> {
                             snapshot: snapshot,
                           );
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                            child: SpinKitCircle(
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 50.0,
+                            ),
+                          );
                         }
                       },
                     ),
@@ -271,8 +289,12 @@ class _HomeViewState extends State<HomeView> {
                             snapshot: snapshot,
                           );
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                            child: SpinKitCircle(
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 50.0,
+                            ),
+                          );
                         }
                       },
                     ),
@@ -298,8 +320,12 @@ class _HomeViewState extends State<HomeView> {
                             snapshot: snapshot,
                           );
                         } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                            child: SpinKitCircle(
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 50.0,
+                            ),
+                          );
                         }
                       },
                     ),
