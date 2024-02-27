@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:movie_assignment/theme/theme.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
+import 'package:movie_assignment/widgets/theme_switch.dart';
 import 'package:provider/provider.dart';
 
 class SettingsView extends StatelessWidget {
@@ -27,7 +26,13 @@ class SettingsView extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16.0),
-            _buildThemeSwitch(context, themeProvider),
+            Row(
+              children: [
+                Text('Light / Dark Mode'),
+                Spacer(),
+                ThemeSwitch(themeProvider: themeProvider),
+              ],
+            ),
             Divider(),
             SizedBox(height: 16.0),
             const Text(
@@ -53,21 +58,6 @@ class SettingsView extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildThemeSwitch(BuildContext context, ThemeProvider themeProvider) {
-    return Row(
-      children: [
-        Text('Light / Dark Mode'),
-        Spacer(),
-        Switch(
-          value: themeProvider.themeData == darkMode,
-          onChanged: (value) {
-            themeProvider.toggleTheme();
-          },
-        ),
-      ],
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as signOut;
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_assignment/api_service/api.dart';
@@ -9,6 +10,7 @@ import 'package:movie_assignment/theme/theme_provider.dart';
 import 'package:movie_assignment/views/search_view.dart';
 import 'package:movie_assignment/views/settings_view.dart';
 import 'package:movie_assignment/widgets/movies_slider.dart';
+import 'package:movie_assignment/widgets/theme_switch.dart';
 import 'package:movie_assignment/widgets/trending_slider.dart';
 import 'package:provider/provider.dart';
 import 'watched_movies_view.dart';
@@ -59,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
       _currentIndex = index;
       _pageController.animateToPage(
         index,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     });
@@ -89,7 +91,7 @@ class _HomeViewState extends State<HomeView> {
               _onBottomNavTapped(0);
             },
             child: Padding(
-              padding: const EdgeInsets.only(right: 5),
+              padding: const EdgeInsets.only(right: 10),
               child: Icon(
                 Icons.search,
                 color: Theme.of(context).colorScheme.secondary,
@@ -98,83 +100,100 @@ class _HomeViewState extends State<HomeView> {
           )
         ],
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Theme.of(context).colorScheme.background,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 32),
-                    Text(
-                      'WATCHPILOT',
-                      style: GoogleFonts.alef(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+      drawer: Container(
+        width: MediaQuery.of(context).size.width * 0.6,
+        child: Drawer(
+          child: Container(
+            color: Theme.of(context).colorScheme.background,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 32),
+                      Text(
+                        'WATCHPILOT',
+                        style: GoogleFonts.alef(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Divider(
-                color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-              ),
-              ListTile(
-                leading: Icon(Icons.home,
-                    color: Theme.of(context).colorScheme.secondary),
-                title: Text('Home',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary)),
-                onTap: () {
-                  Navigator.pop(context);
-                  _onBottomNavTapped(2);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings,
-                    color: Theme.of(context).colorScheme.secondary),
-                title: Text('Settings',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary)),
-                onTap: () {
-                  Navigator.pop(context); // Close the drawer
-                  _onBottomNavTapped(4);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.brightness_6,
-                    color: Theme.of(context).colorScheme.secondary),
-                title: Text('Toggle Dark Mode',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary)),
-                onTap: () {
-                  Provider.of<ThemeProvider>(context, listen: false)
-                      .toggleTheme();
-                },
-              ),
-              Divider(
-                color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-              ),
-              ListTile(
-                leading: Icon(Icons.exit_to_app,
-                    color: Theme.of(context).colorScheme.secondary),
-                title: Text('Logout',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary)),
-                onTap: () async {
-                  try {
-                    await signOut.FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacementNamed(context, '/login');
-                  } catch (e) {
-                    print('Error signing out: $e');
-                  }
-                },
-              ),
-            ],
+                Divider(
+                  color:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                ),
+                ListTile(
+                  leading: Icon(Icons.home,
+                      color: Theme.of(context).colorScheme.secondary),
+                  title: Text('Home',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _onBottomNavTapped(2);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.settings,
+                      color: Theme.of(context).colorScheme.secondary),
+                  title: Text('Settings',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary)),
+                  onTap: () {
+                    Navigator.pop(context); // Close the drawer
+                    _onBottomNavTapped(4);
+                  },
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.dark_mode,
+                              color: Theme.of(context).colorScheme.secondary),
+                          SizedBox(width: 8.0), // Adjust the width as needed
+                          Text('Toggle Theme',
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary)),
+                        ],
+                      ),
+                      ThemeSwitch(
+                        themeProvider: Provider.of<ThemeProvider>(context),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  color:
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                ),
+                Spacer(),
+                ListTile(
+                  leading: Icon(Icons.exit_to_app,
+                      color: Theme.of(context).colorScheme.secondary),
+                  title: Text('Logout',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary)),
+                  onTap: () async {
+                    try {
+                      await signOut.FirebaseAuth.instance.signOut();
+                      Navigator.pushReplacementNamed(context, '/login');
+                    } catch (e) {
+                      print('Error signing out: $e');
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -273,9 +292,8 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  //------------------------------------------------------------------------------------------
-                  Container(
-                    height: 60,
+                  SizedBox(
+                    height: 34,
                     child: FutureBuilder(
                       future: movieGenres,
                       builder: (context, snapshot) {
@@ -304,7 +322,7 @@ class _HomeViewState extends State<HomeView> {
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
-                                    width: 120,
+                                    width: 100,
                                     decoration: BoxDecoration(
                                       color: selectedGenreIndex == index
                                           ? Theme.of(context)
@@ -316,6 +334,7 @@ class _HomeViewState extends State<HomeView> {
                                     child: Text(
                                       genres[index],
                                       style: TextStyle(
+                                        fontSize: 12,
                                         color: selectedGenreIndex == index
                                             ? Colors.white
                                             : Theme.of(context)
