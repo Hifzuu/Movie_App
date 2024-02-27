@@ -14,14 +14,19 @@ class LocalStorage {
       // Convert the movie to a string representation
       String movieString = movie.toString();
 
-      // Add the new movie to the list
-      watchedMovies.add(movieString);
+      // Check if the movie is already in the list to avoid duplicates
+      if (!watchedMovies.contains(movieString)) {
+        // Add the new movie to the list
+        watchedMovies.add(movieString);
 
-      print('Updated watched movies list: $watchedMovies');
+        print('Updated watched movies list: $watchedMovies');
 
-      // Save the updated watched movies list back to local storage
-      prefs.setStringList('watched_movies', watchedMovies);
-      print('Watched movies list saved to local storage');
+        // Save the updated watched movies list back to local storage
+        prefs.setStringList('watched_movies', watchedMovies);
+        print('Watched movies list saved to local storage');
+      } else {
+        print('Duplicate movie not added to watched list');
+      }
     } catch (e) {
       // Handle any potential error during the process
       print('Error adding movie to watched list: $e');

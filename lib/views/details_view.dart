@@ -135,23 +135,40 @@ class DetailsView extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InfoBox(
-                        label: 'Release Date:',
-                        value: movie.releaseDate,
+                      Expanded(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                          child: InfoBox(
+                            label: 'Release Date:',
+                            value: movie.releaseDate,
+                          ),
+                        ),
                       ),
-                      InfoBox(
-                        label: 'Rating:',
-                        value: '${movie.voteAverage.toStringAsFixed(1)}/10',
-                        icon: Icons.star,
-                        iconColor: Colors.amber,
+                      Expanded(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                          child: InfoBox(
+                            label: 'Rating:',
+                            value: '${movie.voteAverage.toStringAsFixed(1)}/10',
+                            icon: Icons.star,
+                            iconColor: Colors.amber,
+                          ),
+                        ),
                       ),
-                      DurationInfoBox(
-                        label: 'Duration:',
-                        durationInMinutes: movie.duration,
-                        icon: Icons.timer_outlined,
-                        iconColor: Theme.of(context).colorScheme.secondary,
+                      Expanded(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                          child: DurationInfoBox(
+                            label: 'Duration:',
+                            durationInMinutes: movie.duration,
+                            icon: Icons.timer_outlined,
+                            iconColor: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -291,40 +308,48 @@ class DetailsView extends StatelessWidget {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      'Movie already added',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    content: const Text(
-                                      'This movie is already in your Watched List',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // Close the dialog
-                                        },
-                                        child: const Text(
-                                          'OK',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  return Dialog(
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderRadius: BorderRadius.circular(15),
                                     ),
                                     elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Movie already added',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          Text(
+                                            'This movie is already in your Watched List',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          SizedBox(height: 20),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: const Text(
+                                              'OK',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   );
                                 },
                               );
@@ -337,25 +362,37 @@ class DetailsView extends StatelessWidget {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      'Success',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Text(
+                                            'Success',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          const Text(
+                                              'Movie added to Watched List Successfully!'),
+                                          SizedBox(height: 20),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    content: const Text(
-                                        'Movie added to Watched List Successfuly!'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // Close the dialog
-                                        },
-                                        child: Text('OK'),
-                                      ),
-                                    ],
                                   );
                                 },
                               );
@@ -373,11 +410,6 @@ class DetailsView extends StatelessWidget {
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // Icon(
-                              //   Icons.check,
-                              //   size: 20,
-                              //   color: Colors.white,
-                              // ),
                               SizedBox(width: 8),
                               Text(
                                 'Add to Watched',

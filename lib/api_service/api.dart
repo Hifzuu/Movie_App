@@ -166,4 +166,19 @@ class api {
       return [];
     }
   }
+
+  Future<List<Movie>> getMoviesByGenre(String genreId) async {
+    final genreMoviesUrl =
+        'https://api.themoviedb.org/3/discover/movie$apiKey&with_genres=$genreId';
+
+    final response = await http.get(Uri.parse(genreMoviesUrl));
+
+    if (response.statusCode == 200) {
+      final decodedData = json.decode(response.body)['results'] as List;
+      List<Movie> movies = await _getMoviesWithDetails(decodedData);
+      return movies;
+    } else {
+      throw Exception('Error fetching movies by genre');
+    }
+  }
 }

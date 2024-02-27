@@ -112,7 +112,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'Rating: ${movie.voteAverage.toStringAsFixed(1)}/10',
+                            '${movie.voteAverage.toStringAsFixed(1)}/10',
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,
@@ -134,7 +134,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'Duration: ${movie.duration} minutes',
+                            '${movie.duration} minutes',
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.grey,

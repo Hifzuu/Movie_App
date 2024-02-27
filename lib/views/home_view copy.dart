@@ -267,6 +267,12 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   const SizedBox(height: 32),
+                  Text(
+                    'Find by genre',
+                    style: GoogleFonts.aBeeZee(
+                      fontSize: 18.0,
+                    ),
+                  ),
                   //
                   const SizedBox(height: 32),
                   Text(
