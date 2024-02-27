@@ -36,13 +36,13 @@ class MovieImageWidget extends StatelessWidget {
   }
 
   String _getImageUrl(Movie movie) {
-    if (movie.backdropPath != null && movie.backdropPath!.isNotEmpty) {
-      return '${api.imagePath}${movie.backdropPath}';
-    } else if (movie.posterPath != null && movie.posterPath!.isNotEmpty) {
+    if (movie.posterPath != null && movie.posterPath!.isNotEmpty) {
       return '${api.imagePath}${movie.posterPath}';
+    } else if (movie.backdropPath != null && movie.backdropPath!.isNotEmpty) {
+      return '${api.imagePath}${movie.backdropPath}';
     } else {
       // Return the fallback image if both paths are empty
-      return 'fallback_image_url';
+      return 'lib/assets/images/image_not_found.jpg';
     }
   }
 }

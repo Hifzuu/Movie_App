@@ -81,9 +81,14 @@ class api {
     List<Movie> moviesWithDetails = [];
 
     for (dynamic movie in movieList) {
-      int movieId = movie['id'];
-      Movie movieDetails = await getMovieDetails(movieId);
-      moviesWithDetails.add(movieDetails);
+      try {
+        int movieId = movie['id'];
+        Movie movieDetails = await getMovieDetails(movieId);
+        moviesWithDetails.add(movieDetails);
+      } catch (e) {
+        print('Error processing movie: $e');
+        // Handle the error, e.g., exclude the movie or log the issue
+      }
     }
 
     return moviesWithDetails;
@@ -147,6 +152,9 @@ class api {
         }
 
         print('Similar Movies List is null or empty.');
+        return [];
+      } else if (response.statusCode == 400) {
+        print('Invalid request. Status code: 400');
         return [];
       } else {
         print(

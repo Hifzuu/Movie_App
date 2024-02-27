@@ -9,6 +9,7 @@ import 'package:movie_assignment/local_storage_service/to_watch_list.dart'
     as toWatch;
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/watched_movies_view.dart';
+import 'package:movie_assignment/widgets/get_movie_image.dart';
 import 'package:movie_assignment/widgets/movie_title_year.dart';
 import 'package:movie_assignment/widgets/trailer_screen.dart';
 import 'package:movie_assignment/widgets/back_button.dart';
@@ -116,7 +117,7 @@ class DetailsView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${movie.title} (${DateTime.parse(movie.releaseDate!).year})',
+                    getMovieTitleWithYear(movie),
                     style: GoogleFonts.amiko(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -399,20 +400,24 @@ class DetailsView extends StatelessWidget {
                             size: 50.0,
                           ),
                         );
-                      } else if (snapshot.hasData) {
-                        List<Movie> similarMovies = snapshot.data!;
-                        print('Similar Movies API Response: $similarMovies');
-                        return _buildSimilarMoviesList(similarMovies);
                       } else if (snapshot.hasError) {
                         print(
                             'Error fetching similar movies: ${snapshot.error}');
                         return Text(
                             'Error fetching similar movies: ${snapshot.error}');
+                      } else if (snapshot.data == null ||
+                          snapshot.data!.isEmpty) {
+                        // If the snapshot data is null or empty, return an empty container
+                        return SizedBox.shrink();
+                      } else if (snapshot.hasData) {
+                        List<Movie> similarMovies = snapshot.data!;
+                        print('Similar Movies API Response: $similarMovies');
+                        return _buildSimilarMoviesList(similarMovies);
                       } else {
                         return SizedBox.shrink();
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             ),
@@ -423,11 +428,15 @@ class DetailsView extends StatelessWidget {
   }
 
   Widget _buildSimilarMoviesList(List<Movie> similarMovies) {
+    if (similarMovies == null || similarMovies.isEmpty) {
+      // Display an error message or return an empty container
+      return Text('No similar movies available.');
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Similar recommendations',
+          'More like this',
           style: GoogleFonts.amiko(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -442,8 +451,7 @@ class DetailsView extends StatelessWidget {
             crossAxisSpacing: 5,
             childAspectRatio: 1.5 / 2,
           ),
-          itemCount:
-              similarMovies.length, // Add this line to specify the item count
+          itemCount: similarMovies.length,
           itemBuilder: (context, index) {
             if (index < similarMovies.length) {
               return GestureDetector(
@@ -457,13 +465,7 @@ class DetailsView extends StatelessWidget {
                     ),
                   );
                 },
-                child: CachedNetworkImage(
-                  imageUrl:
-                      '${api.imagePath}${similarMovies[index].posterPath}',
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                  fit: BoxFit.cover,
-                ),
+                child: MovieImageWidget(movie: similarMovies[index]),
               );
             } else {
               return Container(); // Return an empty container or handle it based on your use case
