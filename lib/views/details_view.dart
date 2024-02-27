@@ -128,7 +128,7 @@ class DetailsView extends StatelessWidget {
                   Row(
                     children: [
                       Text(movie.genres,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.grey,
                           ))
                     ],
@@ -138,8 +138,8 @@ class DetailsView extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 2),
                           child: InfoBox(
                             label: 'Release Date:',
                             value: movie.releaseDate,
@@ -148,8 +148,8 @@ class DetailsView extends StatelessWidget {
                       ),
                       Expanded(
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 2),
                           child: InfoBox(
                             label: 'Rating:',
                             value: '${movie.voteAverage.toStringAsFixed(1)}/10',
@@ -160,8 +160,8 @@ class DetailsView extends StatelessWidget {
                       ),
                       Expanded(
                         child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 2),
                           child: DurationInfoBox(
                             label: 'Duration:',
                             durationInMinutes: movie.duration,
@@ -318,7 +318,7 @@ class DetailsView extends StatelessWidget {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Movie already added',
                                             style: TextStyle(
                                               fontSize: 20,
@@ -326,14 +326,14 @@ class DetailsView extends StatelessWidget {
                                               color: Colors.red,
                                             ),
                                           ),
-                                          SizedBox(height: 10),
-                                          Text(
+                                          const SizedBox(height: 10),
+                                          const Text(
                                             'This movie is already in your Watched List',
                                             style: TextStyle(
                                               fontSize: 16,
                                             ),
                                           ),
-                                          SizedBox(height: 20),
+                                          const SizedBox(height: 20),
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context)

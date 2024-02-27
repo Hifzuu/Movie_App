@@ -19,6 +19,9 @@ class api {
   static const _popularUrl =
       'https://api.themoviedb.org/3/movie/popular$apiKey';
 
+  static const _genresUrl =
+      'https://api.themoviedb.org/3/genre/movie/list$apiKey';
+
   Future<Movie> getMovieDetails(int movieId) async {
     final response = await http.get(
       Uri.parse(
@@ -167,18 +170,61 @@ class api {
     }
   }
 
-  Future<List<Movie>> getMoviesByGenre(String genreId) async {
-    final genreMoviesUrl =
-        'https://api.themoviedb.org/3/discover/movie$apiKey&with_genres=$genreId';
+  Future<List<String>> getMovieGenres() async {
+    try {
+      final response = await http.get(Uri.parse(_genresUrl));
+      if (response.statusCode == 200) {
+        final decodedData = json.decode(response.body)['genres'] as List;
+        List<String> genres = decodedData.map((genre) {
+          return genre['name'].toString();
+        }).toList();
+        return genres;
+      } else {
+        throw Exception('Error fetching movie genres');
+      }
+    } catch (e) {
+      throw Exception('Error fetching movie genres: $e');
+    }
+  }
 
-    final response = await http.get(Uri.parse(genreMoviesUrl));
+  Future<List<Movie>> getMoviesByGenre(String genre) async {
+    final genreId = await _getGenreId(genre);
+
+    if (genreId != null) {
+      final url =
+          'https://api.themoviedb.org/3/discover/movie$apiKey&with_genres=$genreId';
+
+      try {
+        final response = await http.get(Uri.parse(url));
+
+        if (response.statusCode == 200) {
+          final decodedData = json.decode(response.body)['results'] as List;
+          List<Movie> movies = await _getMoviesWithDetails(decodedData);
+          return movies;
+        } else {
+          throw Exception('Failed to load movies by genre');
+        }
+      } catch (e) {
+        throw Exception('Error fetching movies by genre: $e');
+      }
+    } else {
+      throw Exception('Genre ID not found');
+    }
+  }
+
+  // Helper method to get the genre ID
+  Future<int?> _getGenreId(String genre) async {
+    final response = await http.get(Uri.parse(_genresUrl));
 
     if (response.statusCode == 200) {
-      final decodedData = json.decode(response.body)['results'] as List;
-      List<Movie> movies = await _getMoviesWithDetails(decodedData);
-      return movies;
+      final decodedData = json.decode(response.body)['genres'] as List;
+      final genreData = decodedData.firstWhere(
+          (element) => element['name'] == genre,
+          orElse: () => null);
+
+      return genreData != null ? genreData['id'] : null;
     } else {
-      throw Exception('Error fetching movies by genre');
+      throw Exception('Failed to load movie genres');
     }
   }
 }

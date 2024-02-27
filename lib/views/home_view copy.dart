@@ -24,9 +24,13 @@ late Future<List<Movie>> topRatedMovies;
 late Future<List<Movie>> upcomingMovies;
 int _currentIndex = 2; // Default index for the "Home" view
 late PageController _pageController;
+late Future<List<String>> movieGenres;
+late Future<List<Movie>> moviesByGenre;
+int selectedGenreIndex = 0; //default index for the genre selection
 
 class _HomeViewState extends State<HomeView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +38,8 @@ class _HomeViewState extends State<HomeView> {
     topRatedMovies = api().getTopRatedMovies();
     upcomingMovies = api().getUpcomingMovies();
     _pageController = PageController(initialPage: _currentIndex);
+    movieGenres = api().getMovieGenres();
+    moviesByGenre = api().getMoviesByGenre('Action');
   }
 
   @override
@@ -267,12 +273,97 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  Text(
-                    'Find by genre',
-                    style: GoogleFonts.aBeeZee(
-                      fontSize: 18.0,
+                  //------------------------------------------------------------------------------------------
+                  Container(
+                    height: 60,
+                    child: FutureBuilder(
+                      future: movieGenres,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text(snapshot.error.toString()),
+                          );
+                        } else if (snapshot.hasData) {
+                          List<String> genres = snapshot.data as List<String>;
+                          return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            primary: false,
+                            itemCount: genres.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(right: 4),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedGenreIndex = index;
+                                      // Fetch and set movies for the selected genre
+                                      moviesByGenre =
+                                          api().getMoviesByGenre(genres[index]);
+                                    });
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 120,
+                                    decoration: BoxDecoration(
+                                      color: selectedGenreIndex == index
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                          : Theme.of(context).primaryColorLight,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      genres[index],
+                                      style: TextStyle(
+                                        color: selectedGenreIndex == index
+                                            ? Colors.white
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(
+                            child: SpinKitCircle(
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 50.0,
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  FutureBuilder(
+                    future: moviesByGenre,
+                    builder: (context, AsyncSnapshot<List<Movie>> snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      } else if (snapshot.hasData) {
+                        List<Movie> movies = snapshot.data!;
+                        return MoviesSlider(
+                          snapshot: AsyncSnapshot<List<Movie>>.withData(
+                              ConnectionState.done, movies),
+                        );
+                      } else {
+                        return Center(
+                          child: SpinKitCircle(
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 50.0,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+
                   //
                   const SizedBox(height: 32),
                   Text(
