@@ -4,6 +4,7 @@ import 'package:movie_assignment/local_storage_service/watchedList_local.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/api_service/api.dart';
 import 'package:movie_assignment/views/details_view.dart';
+import 'package:movie_assignment/widgets/filter_list.dart';
 import 'package:movie_assignment/widgets/get_movie_image.dart';
 import 'package:movie_assignment/widgets/movie_title_year.dart';
 
@@ -16,7 +17,7 @@ class WatchedMoviesView extends StatefulWidget {
 
 class _WatchedMoviesViewState extends State<WatchedMoviesView> {
   List<Movie>? watchedMovies;
-  String currentSort = 'Title A-Z';
+  String currentSort = 'Alphabetical Ascending (A-Z)';
 
   @override
   void initState() {
@@ -39,27 +40,51 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
     List<Movie> filteredList = watchedMovies!;
 
     switch (currentSort) {
-      case 'Title A-Z':
+      case 'Alphabetical Order (A-Z)':
         filteredList.sort((a, b) => a.title.compareTo(b.title));
         break;
-      case 'Title Z-A':
+      case 'Alphabetical Order (Z-A)':
         filteredList.sort((a, b) => b.title.compareTo(a.title));
         break;
-      case 'Highest Rating':
+      case 'Top Rated First':
         filteredList.sort((a, b) => b.voteAverage.compareTo(a.voteAverage));
         break;
-      case 'Lowest Rating':
-        filteredList.sort((a, b) => b.voteAverage.compareTo(b.voteAverage));
+      case 'Lowest Rated First':
+        filteredList.sort((a, b) => a.voteAverage.compareTo(b.voteAverage));
         break;
-      case 'Newest':
+      case 'Newest Release First':
         filteredList.sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
         break;
-      case 'Oldest':
+      case 'Oldest Release First':
         filteredList.sort((a, b) => a.releaseDate.compareTo(b.releaseDate));
+        break;
+      case 'Longest Duration First':
+        filteredList.sort((a, b) => b.duration.compareTo(a.duration));
+        break;
+      case 'Shortest Duration First':
+        filteredList.sort((a, b) => a.duration.compareTo(b.duration));
         break;
     }
 
     return filteredList;
+  }
+
+  void _showFilterDropdown(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return FilterDropdown(
+          currentSort: currentSort,
+          onSelectFilter: _selectFilter,
+        );
+      },
+    );
+  }
+
+  void _selectFilter(String value) {
+    setState(() {
+      currentSort = value;
+    });
   }
 
   @override
@@ -69,41 +94,17 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
         title: const Text('Watched Movies'),
         automaticallyImplyLeading: false,
         actions: [
-          DropdownButton<String>(
-            value: currentSort,
-            items: const [
-              DropdownMenuItem<String>(
-                value: 'Title A-Z',
-                child: Text('Title A-Z'),
-              ),
-              DropdownMenuItem<String>(
-                value: 'Title Z-A',
-                child: Text('Title Z-A'),
-              ),
-              DropdownMenuItem<String>(
-                value: 'Highest Rating',
-                child: Text('Highest Rating'),
-              ),
-              DropdownMenuItem<String>(
-                value: 'Lowest Rating',
-                child: Text('Lowest Rating'),
-              ),
-              DropdownMenuItem<String>(
-                value: 'Newest',
-                child: Text('Newest'),
-              ),
-              DropdownMenuItem<String>(
-                value: 'Oldest',
-                child: Text('Oldest'),
-              ),
-            ],
-            onChanged: (String? value) {
-              if (value != null) {
-                setState(() {
-                  currentSort = value;
-                });
-              }
+          InkWell(
+            onTap: () {
+              _showFilterDropdown(context);
             },
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Icon(
+                Icons.filter_list,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
           ),
         ],
       ),
