@@ -500,12 +500,9 @@ class _HomeViewState extends State<HomeView> {
             showSelectedLabels: true, // Show labels for the selected item
             showUnselectedLabels: true, // Show labels for unselected items
             elevation: 8, // Set the elevation for a subtle shadow
-            backgroundColor: Theme.of(context)
-                .colorScheme
-                .background, // Set the background color
-            selectedFontSize: 12, // Set font size for selected label
-            unselectedFontSize: 12, // Set font size for unselected labels
-            // Handle navigation events
+            backgroundColor: Theme.of(context).colorScheme.background,
+            selectedFontSize: 12,
+            unselectedFontSize: 12,
           ),
         ],
       ),

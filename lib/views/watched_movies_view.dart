@@ -16,6 +16,7 @@ class WatchedMoviesView extends StatefulWidget {
 
 class _WatchedMoviesViewState extends State<WatchedMoviesView> {
   List<Movie>? watchedMovies;
+  String currentSort = 'Title A-Z';
 
   @override
   void initState() {
@@ -30,12 +31,81 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
     });
   }
 
+  List<Movie> getFilteredMovies() {
+    if (watchedMovies == null) {
+      return [];
+    }
+
+    List<Movie> filteredList = watchedMovies!;
+
+    switch (currentSort) {
+      case 'Title A-Z':
+        filteredList.sort((a, b) => a.title.compareTo(b.title));
+        break;
+      case 'Title Z-A':
+        filteredList.sort((a, b) => b.title.compareTo(a.title));
+        break;
+      case 'Highest Rating':
+        filteredList.sort((a, b) => b.voteAverage.compareTo(a.voteAverage));
+        break;
+      case 'Lowest Rating':
+        filteredList.sort((a, b) => b.voteAverage.compareTo(b.voteAverage));
+        break;
+      case 'Newest':
+        filteredList.sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
+        break;
+      case 'Oldest':
+        filteredList.sort((a, b) => a.releaseDate.compareTo(b.releaseDate));
+        break;
+    }
+
+    return filteredList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Watched Movies'),
+        title: const Text('Watched Movies'),
         automaticallyImplyLeading: false,
+        actions: [
+          DropdownButton<String>(
+            value: currentSort,
+            items: const [
+              DropdownMenuItem<String>(
+                value: 'Title A-Z',
+                child: Text('Title A-Z'),
+              ),
+              DropdownMenuItem<String>(
+                value: 'Title Z-A',
+                child: Text('Title Z-A'),
+              ),
+              DropdownMenuItem<String>(
+                value: 'Highest Rating',
+                child: Text('Highest Rating'),
+              ),
+              DropdownMenuItem<String>(
+                value: 'Lowest Rating',
+                child: Text('Lowest Rating'),
+              ),
+              DropdownMenuItem<String>(
+                value: 'Newest',
+                child: Text('Newest'),
+              ),
+              DropdownMenuItem<String>(
+                value: 'Oldest',
+                child: Text('Oldest'),
+              ),
+            ],
+            onChanged: (String? value) {
+              if (value != null) {
+                setState(() {
+                  currentSort = value;
+                });
+              }
+            },
+          ),
+        ],
       ),
       body: buildBody(),
     );
@@ -67,13 +137,15 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
   }
 
   Widget buildMovieList() {
+    List<Movie> filteredMovies = getFilteredMovies();
+
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: watchedMovies!.length,
+            itemCount: filteredMovies.length,
             itemBuilder: (context, index) {
-              Movie movie = watchedMovies![index];
+              Movie movie = filteredMovies[index];
               return GestureDetector(
                 onTap: () {
                   Navigator.push(

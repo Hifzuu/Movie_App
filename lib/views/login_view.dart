@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:movie_assignment/views/signup_view.dart';
 import 'package:movie_assignment/widgets/login_scaffold.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // class LoginView extends StatelessWidget {
 //   @override
@@ -42,7 +43,36 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
-  bool rememberPassword = true;
+  bool rememberPassword = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadSavedCredentials();
+  }
+
+  Future<void> loadSavedCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      rememberPassword = prefs.getBool('rememberPassword') ?? false;
+      if (rememberPassword) {
+        _emailController.text = prefs.getString('email') ?? '';
+        _passwordController.text = prefs.getString('password') ?? '';
+      }
+    });
+  }
+
+  Future<void> saveCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('rememberPassword', rememberPassword);
+    if (rememberPassword) {
+      prefs.setString('email', _emailController.text);
+      prefs.setString('password', _passwordController.text);
+    } else {
+      prefs.remove('email');
+      prefs.remove('password');
+    }
+  }
 
   Future<void> _authenticateUser() async {
     try {
@@ -185,11 +215,9 @@ class _LoginFormState extends State<LoginForm> {
                             Checkbox(
                               value: rememberPassword,
                               onChanged: (bool? value) {
-                                setState(
-                                  () {
-                                    rememberPassword = value!;
-                                  },
-                                );
+                                setState(() {
+                                  rememberPassword = value ?? false;
+                                });
                               },
                               activeColor:
                                   Theme.of(context).colorScheme.primary,
@@ -218,7 +246,10 @@ class _LoginFormState extends State<LoginForm> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Perform signup authentication
+                          // Perform login authentication
+                          if (rememberPassword) {
+                            saveCredentials();
+                          }
                           _authenticateUser();
                         },
                         style: ButtonStyle(
