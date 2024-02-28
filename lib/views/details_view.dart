@@ -76,34 +76,33 @@ class DetailsView extends StatelessWidget {
                           print('No trailer available for this movie');
                         }
                       },
-                      child:
-                          movie.trailers != null && movie.trailers!.isNotEmpty
-                              ? Center(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary, // Adjust background color
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(
-                                              0.3), // Add a subtle shadow
-                                          spreadRadius: 2,
-                                          blurRadius: 4,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
+                      child: movie.trailers.isNotEmpty
+                          ? Center(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary, // Adjust background color
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(
+                                          0.3), // Add a subtle shadow
+                                      spreadRadius: 2,
+                                      blurRadius: 4,
+                                      offset: Offset(0, 2),
                                     ),
-                                    padding: const EdgeInsets.all(16),
-                                    child: const Icon(
-                                      Icons.play_arrow,
-                                      size: 50,
-                                      color: Colors.white, // Adjust icon color
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
+                                  ],
+                                ),
+                                padding: const EdgeInsets.all(16),
+                                child: const Icon(
+                                  Icons.play_arrow,
+                                  size: 50,
+                                  color: Colors.white, // Adjust icon color
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                     ),
                   ),
                 ],
@@ -185,7 +184,7 @@ class DetailsView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      if (movie.trailers != null && movie.trailers!.isNotEmpty)
+                      if (movie.trailers.isNotEmpty)
                         ElevatedButton(
                           onPressed: () async {
                             // Check if the movie is already in the watched list
@@ -294,7 +293,7 @@ class DetailsView extends StatelessWidget {
                             ],
                           ),
                         ),
-                      if (movie.trailers != null && movie.trailers!.isNotEmpty)
+                      if (movie.trailers.isNotEmpty)
                         ElevatedButton(
                           onPressed: () async {
                             // Check if the movie is already in the watched list

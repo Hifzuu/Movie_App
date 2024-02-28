@@ -33,6 +33,7 @@ dependencies:
   cached_network_image: ^3.3.1
   internet_connection_checker: ^1.0.0+1
   connectivity_plus: ^5.0.2
+  flutter_cache_manager: ^3.3.1
   
 
 
