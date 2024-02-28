@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart' as signOut;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,6 +35,8 @@ int selectedGenreIndex = 0; //default index for the genre selection
 
 class _HomeViewState extends State<HomeView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  bool isDisconnected = false;
 
   @override
   void initState() {
@@ -42,10 +47,64 @@ class _HomeViewState extends State<HomeView> {
     _pageController = PageController(initialPage: _currentIndex);
     movieGenres = api().getMovieGenres();
     moviesByGenre = api().getMoviesByGenre('Action');
+    _connectivitySubscription =
+        Connectivity().onConnectivityChanged.listen((result) {
+      _handleConnectivityChange(result);
+    });
+  }
+
+  void _handleConnectivityChange(ConnectivityResult result) {
+    setState(() {
+      isDisconnected = result == ConnectivityResult.none;
+    });
+
+    if (isDisconnected) {
+      // Show dialog when there is no connectivity
+      showDialog(
+        context: context,
+        barrierDismissible: false, // Prevent dialog dismissal on outside tap
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Row(
+              children: [
+                Icon(
+                  Icons.warning,
+                  color: Colors.red, // Warning color
+                ),
+                SizedBox(width: 8),
+                Text(
+                  'No Connection',
+                  style: TextStyle(
+                    color: Colors.red, // Warning color
+                  ),
+                ),
+              ],
+            ),
+            content: Text('Please connect to Wi-Fi or cellular data.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  if (isDisconnected == false) {
+                    Navigator.pop(context); // Close the dialog
+                  }
+                },
+                child: const Text(
+                  'Retry',
+                  style: TextStyle(
+                    color: Colors.red, // Warning color
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
   void dispose() {
+    _connectivitySubscription.cancel();
     _pageController.dispose();
     super.dispose();
   }
@@ -65,6 +124,31 @@ class _HomeViewState extends State<HomeView> {
         curve: Curves.easeInOut,
       );
     });
+  }
+
+  void _showConnectivityDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // prevent dialog from closing on outside tap
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('No Connection'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Please connect to Wi-Fi or cellular data.'),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Close the dialog
+                },
+                child: Text('Retry'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override

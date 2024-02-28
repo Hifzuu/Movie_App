@@ -85,85 +85,107 @@ class _SearchViewState extends State<SearchView> {
               ),
             ),
           if (_searchQuery.isEmpty) // Show top searches in a ListView
-            Expanded(
-              child: ListView.builder(
-                itemCount: searchResults.length,
-                itemBuilder: (context, index) {
-                  Movie movie = searchResults[index];
-                  return ListTile(
-                    contentPadding: EdgeInsets.all(8),
-                    leading: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: MovieImageWidget(movie: movie),
-                    ),
-                    title: Text(
-                      getMovieTitleWithYear(movie) ?? 'Unknown Title',
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+            searchResults.isEmpty
+                ? Center(
+                    child: Text(
+                      'No results found for: "$_searchQuery"',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailsView(movie: movie),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          if (_searchQuery.isNotEmpty) // Show searched movies in a GridView
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0,
-                ),
-                itemCount: searchResults.length,
-                itemBuilder: (context, index) {
-                  Movie movie = searchResults[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailsView(movie: movie),
-                        ),
-                      );
-                    },
-                    child: GridTile(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: searchResults.length,
+                      itemBuilder: (context, index) {
+                        Movie movie = searchResults[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.all(8),
+                          leading: SizedBox(
+                            width: 50,
+                            height: 50,
                             child: MovieImageWidget(movie: movie),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              getMovieTitleWithYear(movie) ?? 'Unknown Title',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                          title: Text(
+                            getMovieTitleWithYear(movie) ?? 'Unknown Title',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
                             ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ],
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailsView(movie: movie),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+          if (_searchQuery.isNotEmpty) // Show searched movies in a GridView
+            searchResults.isEmpty
+                ? Center(
+                    child: Text(
+                      'No results found for: "$_searchQuery"',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
+                  )
+                : Expanded(
+                    child: GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8.0,
+                        mainAxisSpacing: 8.0,
+                      ),
+                      itemCount: searchResults.length,
+                      itemBuilder: (context, index) {
+                        Movie movie = searchResults[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailsView(movie: movie),
+                              ),
+                            );
+                          },
+                          child: GridTile(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Expanded(
+                                  child: MovieImageWidget(movie: movie),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    getMovieTitleWithYear(movie) ??
+                                        'Unknown Title',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
         ],
       ),
     );
