@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movie_assignment/api_service/api.dart';
+import 'package:movie_assignment/services/movie_api.dart';
 import 'package:movie_assignment/local_storage_service/watchedList_local.dart'
     as watched;
 import 'package:movie_assignment/local_storage_service/to_watch_list.dart'

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:http/http.dart' as http;
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/models/trailer.dart';
@@ -225,6 +227,40 @@ class api {
       return genreData != null ? genreData['id'] : null;
     } else {
       throw Exception('Failed to load movie genres');
+    }
+  }
+
+  Future<Movie> getRandomMovie() async {
+    try {
+      // Make a request to get a random movie
+      final response = await http.get(Uri.parse(_popularUrl));
+
+      if (response.statusCode == 200) {
+        // Decode the response and get the list of movies
+        final discoverData = json.decode(response.body);
+        final List<dynamic> moviesJson = discoverData['results'];
+
+        if (moviesJson.isNotEmpty) {
+          // Select a random index
+          final random = Random();
+          final int randomIndex = random.nextInt(moviesJson.length);
+
+          // Extract the movie details from the randomly selected index
+          final Map<String, dynamic> randomMovieData = moviesJson[randomIndex];
+
+          // Create a Movie object using the extracted data
+          final Movie randomMovie =
+              await getMovieDetails(randomMovieData['id']);
+          return randomMovie;
+        } else {
+          throw Exception('No movies found in the discover response');
+        }
+      } else {
+        throw Exception(
+            'Failed to load discover movies: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching random movie: $e');
     }
   }
 }

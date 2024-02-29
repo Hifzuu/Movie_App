@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:movie_assignment/services/shake_detection_provider.dart';
+import 'package:movie_assignment/services/shake_detector.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
+import 'package:movie_assignment/views/home_view%20copy.dart';
+import 'package:movie_assignment/widgets/shake_switch.dart';
 import 'package:movie_assignment/widgets/theme_switch.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +12,8 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+    ShakeDetectionProvider shakeDetectionProvider =
+        Provider.of<ShakeDetectionProvider>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -20,39 +26,62 @@ class SettingsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Theme',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Row(
+                children: [
+                  const Text('Change between light and dark mode'),
+                  const Spacer(),
+                  ThemeSwitch(themeProvider: themeProvider),
+                ],
+              ),
+              const Divider(),
+              const SizedBox(height: 16.0),
+              Text(
+                'Shake Detection',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               SizedBox(height: 16.0),
               Row(
                 children: [
-                  Text('Light / Dark Mode'),
-                  Spacer(),
-                  ThemeSwitch(themeProvider: themeProvider),
+                  const Text(
+                      'Shake your device to make a randomly selected movie pop up'),
+                  const Spacer(),
+                  ShakeDetectionSwitch(
+                      shakeDetectionProvider: shakeDetectionProvider),
                 ],
               ),
               Divider(),
               SizedBox(height: 16.0),
-              const Text(
+              Text(
                 'Notifications',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               SizedBox(height: 16.0),
               _buildNotificationSwitch(context),
               Divider(),
               SizedBox(height: 16.0),
-              const Text(
+              Text(
                 'Additional Settings',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               SizedBox(height: 16.0),
@@ -65,11 +94,12 @@ class SettingsView extends StatelessWidget {
               _buildClearCacheButton(context),
               Divider(),
               SizedBox(height: 16.0),
-              const Text(
+              Text(
                 'About',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               SizedBox(height: 16.0),
@@ -150,7 +180,7 @@ class SettingsView extends StatelessWidget {
   Widget _buildClearCacheButton(BuildContext context) {
     return Row(
       children: [
-        const Text('Clear Cache'),
+        const Text('Clear App Cache'),
         const Spacer(),
         ElevatedButton(
           onPressed: () {

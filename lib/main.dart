@@ -1,6 +1,8 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movie_assignment/firebase_options.dart';
+import 'package:movie_assignment/services/shake_detection_provider.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
 import 'package:movie_assignment/views/search_view.dart';
 import 'package:movie_assignment/views/splash_screen.dart';
@@ -17,13 +19,24 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   ThemeProvider themeProvider = ThemeProvider();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+    ),
+  );
+  ShakeDetectionProvider shakeDetectionProvider = ShakeDetectionProvider();
   await themeProvider.loadTheme();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // Initialize Firebase
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => themeProvider,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
+        ChangeNotifierProvider<ShakeDetectionProvider>.value(
+            value: shakeDetectionProvider),
+      ],
       child: MyApp(),
     ),
   );
@@ -34,7 +47,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Watch Pilot',
+      title: 'WATCHPILOT',
       theme: Provider.of<ThemeProvider>(context).themeData,
       home: SplashScreen(),
       //initialRoute: '/welcome',

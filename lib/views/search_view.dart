@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:movie_assignment/api_service/api.dart';
+import 'package:movie_assignment/services/movie_api.dart';
 import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/details_view.dart';
 import 'package:movie_assignment/widgets/get_movie_image.dart';
