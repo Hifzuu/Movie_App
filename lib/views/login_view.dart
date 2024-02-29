@@ -9,22 +9,6 @@ import 'package:movie_assignment/views/signup_view.dart';
 import 'package:movie_assignment/widgets/login_scaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// class LoginView extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Container(
-//         decoration:
-//             BoxDecoration(color: Theme.of(context).colorScheme.background),
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: LoginForm(),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -238,6 +222,10 @@ class _LoginFormState extends State<LoginForm> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                                context, '/forgot_password');
+                          },
                         ),
                       ],
                     ),

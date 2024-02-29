@@ -3,7 +3,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:movie_assignment/services/shake_detection_provider.dart';
 import 'package:movie_assignment/services/shake_detector.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
-import 'package:movie_assignment/views/home_view%20copy.dart';
+import 'package:movie_assignment/views/home_view.dart';
 import 'package:movie_assignment/widgets/shake_switch.dart';
 import 'package:movie_assignment/widgets/theme_switch.dart';
 import 'package:provider/provider.dart';
@@ -55,11 +55,15 @@ class SettingsView extends StatelessWidget {
               SizedBox(height: 16.0),
               Row(
                 children: [
-                  const Text(
-                      'Shake your device to make a randomly selected movie pop up'),
-                  const Spacer(),
+                  const Flexible(
+                    child: Text(
+                      'Shake your device to make a randomly selected movie pop up',
+                      // Add any additional text styling as needed
+                    ),
+                  ),
                   ShakeDetectionSwitch(
-                      shakeDetectionProvider: shakeDetectionProvider),
+                    shakeDetectionProvider: shakeDetectionProvider,
+                  ),
                 ],
               ),
               Divider(),

@@ -4,12 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:movie_assignment/firebase_options.dart';
 import 'package:movie_assignment/services/shake_detection_provider.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
+import 'package:movie_assignment/views/forgot_pwd_view.dart';
 import 'package:movie_assignment/views/search_view.dart';
 import 'package:movie_assignment/views/splash_screen.dart';
 import 'package:movie_assignment/views/welcome_view.dart';
 import 'package:provider/provider.dart';
 import 'views/login_view.dart';
-import 'views/home_view copy.dart';
+import 'views/home_view.dart';
 import 'views/signup_view.dart';
 import 'views/watched_movies_view.dart';
 import 'views/to-watch_movies_view.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/welcome': (context) => WelcomeView(),
         '/login': (context) => LoginView(),
+        '/forgot_password': (context) => ForgotPasswordView(),
         '/home': (context) => HomeView(),
         '/signup': (context) => SignupView(),
         '/watched_movies': (context) => WatchedMoviesView(),

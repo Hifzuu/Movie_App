@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart' as signOut;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -145,35 +147,10 @@ class _HomeViewState extends State<HomeView> {
       _currentIndex = index;
       _pageController.animateToPage(
         index,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     });
-  }
-
-  void _showConnectivityDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false, // prevent dialog from closing on outside tap
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('No Connection'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Please connect to Wi-Fi or cellular data.'),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the dialog
-                },
-                child: Text('Retry'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -209,7 +186,8 @@ class _HomeViewState extends State<HomeView> {
           )
         ],
       ),
-      drawer: Container(
+      //sidebar
+      drawer: SizedBox(
         width: MediaQuery.of(context).size.width * 0.6,
         child: Drawer(
           child: Container(
@@ -323,6 +301,7 @@ class _HomeViewState extends State<HomeView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  //personalised welcome message
                   FutureBuilder(
                     future: User.fetchUserData(),
                     builder: (context, snapshot) {
@@ -377,6 +356,7 @@ class _HomeViewState extends State<HomeView> {
                     },
                   ),
                   const SizedBox(height: 16),
+                  //trending moovies carousel slider
                   SizedBox(
                     child: FutureBuilder(
                       future: trendingMovies,
@@ -401,6 +381,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   const SizedBox(height: 32),
+                  //genre specific movie section (selectable list of genres)
                   SizedBox(
                     height: 34,
                     child: FutureBuilder(
@@ -468,6 +449,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  //section showing the movies that align with selected genre
                   FutureBuilder(
                     future: moviesByGenre,
                     builder: (context, AsyncSnapshot<List<Movie>> snapshot) {
@@ -491,8 +473,7 @@ class _HomeViewState extends State<HomeView> {
                       }
                     },
                   ),
-
-                  //
+                  //top rated movies slider
                   const SizedBox(height: 32),
                   Text(
                     'Top Rated Movies',
@@ -524,6 +505,7 @@ class _HomeViewState extends State<HomeView> {
                       },
                     ),
                   ),
+                  //upcoming movies slider
                   const SizedBox(height: 32),
                   Text(
                     'Upcoming Movies',
@@ -565,55 +547,27 @@ class _HomeViewState extends State<HomeView> {
           SettingsView(),
         ],
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Divider(
-            height: 1, // Adjust the height as needed
-            thickness: 0.1, // Adjust the thickness for a subtle appearance
-            color: Colors.grey.shade500, // Use the desired color
-          ),
-          BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: _onBottomNavTapped,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.movie),
-                label: 'Watched',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.star),
-                label: 'To-Watch',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
-              ),
-            ],
-            selectedItemColor: Theme.of(context)
-                .colorScheme
-                .primary, // Set the color for the active item
-            unselectedItemColor: Theme.of(context)
-                .colorScheme
-                .secondary, // Set the color for unselected items
-            type: BottomNavigationBarType
-                .fixed, // Set to fixed for persistent navigation bar
-            showSelectedLabels: true, // Show labels for the selected item
-            showUnselectedLabels: true, // Show labels for unselected items
-            elevation: 8, // Set the elevation for a subtle shadow
-            backgroundColor: Theme.of(context).colorScheme.background,
-            selectedFontSize: 12,
-            unselectedFontSize: 12,
-          ),
+      //navigation bar
+      bottomNavigationBar: ConvexAppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.secondary,
+        activeColor: Theme.of(context).colorScheme.primary,
+        items: const [
+          TabItem(icon: Icons.search, title: 'Search'),
+          TabItem(icon: Icons.movie, title: 'Watched'),
+          TabItem(icon: Icons.home, title: 'Home'),
+          TabItem(icon: Icons.star, title: 'To-Watch'),
+          TabItem(icon: Icons.settings, title: 'Settings'),
         ],
+        initialActiveIndex: _currentIndex,
+        onTap: (int index) {
+          _onBottomNavTapped(index);
+        },
+        style: TabStyle.reactCircle,
+        curveSize: 5,
+        height: 50,
+        top: -12,
+        curve: Curves.easeInOut,
       ),
     );
   }

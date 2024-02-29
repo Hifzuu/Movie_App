@@ -21,10 +21,10 @@ class ShakeDetector {
 
       double acceleration = x * x + y * y + z * z;
 
-      print('ShakeDetector - Acceleration: $acceleration');
+      //print('ShakeDetector - Acceleration: $acceleration');
 
       if (acceleration > shakeThreshold * shakeThreshold) {
-        print('ShakeDetector - Shake detected!');
+        //print('ShakeDetector - Shake detected!');
 
         // Check cooldown period
         if (lastShakeTime == null ||
