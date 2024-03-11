@@ -54,7 +54,7 @@ class SettingsView extends StatelessWidget {
               Row(
                 children: [
                   const Text(
-                    'Shake your device to make a randomly selected movie pop up',
+                    'Shake device to recieve random movie',
                   ),
                   const Spacer(),
                   ShakeDetectionSwitch(
