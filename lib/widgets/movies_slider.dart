@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/services/movie_api.dart';
-import 'package:movie_assignment/models/movie.dart';
 import 'package:movie_assignment/views/details_view.dart';
 
 class MoviesSlider extends StatelessWidget {
@@ -60,7 +59,7 @@ class MoviesSlider extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       child: Text(
                         snapshot.data![index].title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           color: Colors.white,

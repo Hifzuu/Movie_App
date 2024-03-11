@@ -19,7 +19,7 @@ class MovieImageWidget extends StatelessWidget {
         width: 80,
         errorBuilder:
             (BuildContext context, Object error, StackTrace? stackTrace) {
-          // Handle the error, e.g., by providing a fallback image
+          //fallback image
           return ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
@@ -36,12 +36,12 @@ class MovieImageWidget extends StatelessWidget {
   }
 
   String _getImageUrl(Movie movie) {
-    if (movie.posterPath != null && movie.posterPath!.isNotEmpty) {
+    if (movie.posterPath.isNotEmpty) {
       return '${api.imagePath}${movie.posterPath}';
-    } else if (movie.backdropPath != null && movie.backdropPath!.isNotEmpty) {
+    } else if (movie.backdropPath.isNotEmpty) {
       return '${api.imagePath}${movie.backdropPath}';
     } else {
-      // Return the fallback image if both paths are empty
+      //fallback image if both paths are empty
       return 'lib/assets/images/image_not_found.jpg';
     }
   }

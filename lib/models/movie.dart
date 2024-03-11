@@ -10,9 +10,10 @@ class Movie {
   final String releaseDate;
   final double voteAverage;
   final int duration;
-  List<Trailer> trailers;
+  List<Trailer> trailers; // List of trailers associated with the movie
   String genres;
 
+  // Constructor to create a Movie instance
   Movie({
     required this.id,
     required this.title,
@@ -27,12 +28,13 @@ class Movie {
     required this.genres,
   });
 
+  // Factory method to create a Movie instance from JSON data
   factory Movie.fromJson(Map<String, dynamic> json) {
     List<Trailer> trailers = [];
 
     // Check if "videos" key is present in the JSON
     if (json.containsKey('videos')) {
-      // Assuming trailers are under "results" key
+      // trailers under results key
       List<dynamic> trailersJson = json['videos']['results'];
 
       // Parse trailers
@@ -41,9 +43,11 @@ class Movie {
       }).toList();
     }
 
+    // Extract genre information from JSON
     List<dynamic> genreList = json['genres'];
     String genresString = genreList.map((genre) => genre['name']).join(', ');
 
+    // Create and return a Movie instance
     return Movie(
       id: json['id'] as int? ?? 0,
       title: json["title"] ?? "",
@@ -59,22 +63,27 @@ class Movie {
     );
   }
 
+  // Convert Movie instance to a string
   String toString() {
     String trailersString =
         trailers.map((trailer) => trailer.toString()).join("|*|");
+    // Return a formatted string representing the Movie instance
     return '$id|$title|$backdropPath|$originalTitle|$overview|$posterPath|$releaseDate|$voteAverage|$duration|$genres|$trailersString';
   }
 
+  // Factory method to create a Movie instance from a string representation
   factory Movie.fromString(String string) {
     try {
+      // Split the input string into parts
       List<String> parts = string.split('|');
 
-      // Assuming trailers are the last part in the string
+      // Extract trailer information from the last part of the string
       List<Trailer> trailers = parts.last
           .split('|*|')
           .map((trailerString) => Trailer.fromString(trailerString))
           .toList();
 
+      // Create and return a Movie instance
       return Movie(
         id: int.parse(parts[0]),
         title: parts[1],
@@ -107,6 +116,7 @@ class Movie {
     }
   }
 
+  // Get the key of the first trailer, if available
   String? get trailerKey {
     return trailers.isNotEmpty ? trailers[0].key : null;
   }

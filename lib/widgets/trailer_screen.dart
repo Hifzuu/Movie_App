@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart' as http;
 import 'package:movie_assignment/services/movie_api.dart';
 import 'package:movie_assignment/widgets/back_button.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -21,7 +19,7 @@ class _TrailerScreenState extends State<TrailerScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = null; // Set the controller to null initially
+    _controller = null;
     _loadTrailerKey();
   }
 
@@ -32,10 +30,10 @@ class _TrailerScreenState extends State<TrailerScreen> {
 
       print('Fetched trailer key: $trailerKey');
 
-      if (trailerKey != null && trailerKey.isNotEmpty) {
+      if (trailerKey.isNotEmpty) {
         _controller = YoutubePlayerController(
           initialVideoId: trailerKey,
-          flags: YoutubePlayerFlags(
+          flags: const YoutubePlayerFlags(
             autoPlay: true,
             mute: false,
           ),
@@ -47,7 +45,6 @@ class _TrailerScreenState extends State<TrailerScreen> {
       }
     } catch (e) {
       print('Error loading trailer key: $e');
-      // Handle the error accordingly
     }
   }
 
@@ -75,7 +72,6 @@ class _TrailerScreenState extends State<TrailerScreen> {
                         elevation: 0,
                       ),
                     ),
-                    // Additional widgets as needed
                   ],
                 );
               },

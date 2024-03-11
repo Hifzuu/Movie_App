@@ -1,11 +1,9 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/widgets.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:movie_assignment/views/signup_view.dart';
 import 'package:movie_assignment/widgets/login_scaffold.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -74,13 +72,11 @@ class _LoginFormState extends State<LoginForm> {
       // Successful login
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
-      // Handle FirebaseAuth exceptions
       String errorMessage = 'Log in failed. Please try again.';
 
       if (e.code == 'user-not-found' || e.code == 'wrong-password') {
         errorMessage = 'Invalid credentials';
       }
-
       // Show an error message
       _showErrorMessage(context, errorMessage);
     } catch (e) {
@@ -97,12 +93,12 @@ class _LoginFormState extends State<LoginForm> {
       duration: Duration(seconds: 10),
       backgroundColor: Colors.red,
       borderRadius: BorderRadius.circular(10),
-      flushbarStyle: FlushbarStyle.GROUNDED, // Adjusted flushbar style
+      flushbarStyle: FlushbarStyle.GROUNDED,
       flushbarPosition: FlushbarPosition.TOP, // Positioned at the bottom
       icon: const Icon(
         Icons.error_outline,
         color: Colors.white,
-      ), // Add an error icon
+      ),
       leftBarIndicatorColor: Colors.red,
       margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.all(16),
@@ -308,9 +304,7 @@ class _LoginFormState extends State<LoginForm> {
                         Text(
                           "Don't have an account? ",
                           style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondary, // Dark blue color
+                            color: Theme.of(context).colorScheme.secondary,
                             fontSize: 16.0,
                           ),
                         ),
@@ -322,9 +316,7 @@ class _LoginFormState extends State<LoginForm> {
                           child: Text(
                             "Register",
                             style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary, // Dark blue color
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
                             ),

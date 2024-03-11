@@ -40,8 +40,6 @@ class _SignupFormState extends State<SignupForm> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _profilePictureController =
-      TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isPasswordVisible = false;
   bool agreeToPrivacy = true;
@@ -51,7 +49,6 @@ class _SignupFormState extends State<SignupForm> {
     final String password = _passwordController.text;
     final String confirmPassword = _confirmPasswordController.text;
     final String name = _nameController.text;
-    //final String profilePicture = _profilePictureController.text;
 
     if (password != confirmPassword) {
       _showErrorMessage(context, 'Passwords do not match.');
@@ -81,17 +78,15 @@ class _SignupFormState extends State<SignupForm> {
           .set({
         'email': email,
         'name': name,
-        //'profilePicture': profilePicture,
       });
 
-      // Debug print to verify successful account creation
+      //verify successful account creation
       print('Account created successfully for email: $email');
 
       // Navigate back to the login screen
       Navigator.pushReplacementNamed(context, '/login',
           arguments: {'email': email});
     } on FirebaseAuthException catch (e) {
-      // Handle FirebaseAuth exceptions
       String errorMessage = 'An error occurred, please try again.';
 
       if (e.code == 'weak-password') {
@@ -101,13 +96,9 @@ class _SignupFormState extends State<SignupForm> {
         errorMessage =
             'An account already exists for the provided email. Please use a different email.';
       }
-
-      // Show an error message
       _showErrorMessage(context, errorMessage);
     } catch (e) {
-      // Handle other exceptions
       print('Error during account creation: ${e.toString()}');
-      // Show a generic error message
       _showErrorMessage(context, 'An error occurred, please try again. ');
     }
   }
@@ -118,12 +109,12 @@ class _SignupFormState extends State<SignupForm> {
       duration: Duration(seconds: 10),
       backgroundColor: Colors.red,
       borderRadius: BorderRadius.circular(10),
-      flushbarStyle: FlushbarStyle.GROUNDED, // Adjusted flushbar style
+      flushbarStyle: FlushbarStyle.GROUNDED,
       flushbarPosition: FlushbarPosition.TOP, // Positioned at the bottom
       icon: const Icon(
         Icons.error_outline,
         color: Colors.white,
-      ), // Add an error icon
+      ),
       leftBarIndicatorColor: Colors.red,
       margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.all(16),
@@ -266,7 +257,7 @@ class _SignupFormState extends State<SignupForm> {
                                   Theme.of(context).colorScheme.primary,
                             ),
                             Text(
-                              'I agree to he processing of personal data',
+                              'I agree to the processing of personal data',
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
@@ -280,7 +271,7 @@ class _SignupFormState extends State<SignupForm> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Perform signup authentication
+                          // signup authentication
                           _signup();
                         },
                         style: ButtonStyle(
@@ -351,23 +342,19 @@ class _SignupFormState extends State<SignupForm> {
                         Text(
                           "Already registered ",
                           style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondary, // Dark blue color
+                            color: Theme.of(context).colorScheme.secondary,
                             fontSize: 16.0,
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Navigate to the login page when the link is tapped
+                            // Navigate to the login page
                             Navigator.pushReplacementNamed(context, '/login');
                           },
                           child: Text(
                             "Log In",
                             style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary, // Dark blue color
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold,
                             ),

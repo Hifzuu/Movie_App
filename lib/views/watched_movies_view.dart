@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:movie_assignment/local_storage_service/watchedList_local.dart';
 import 'package:movie_assignment/models/movie.dart';
-import 'package:movie_assignment/services/movie_api.dart';
 import 'package:movie_assignment/views/details_view.dart';
 import 'package:movie_assignment/widgets/filter_list.dart';
 import 'package:movie_assignment/widgets/get_movie_image.dart';
@@ -160,7 +159,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                 },
                 child: ListTile(
                   contentPadding:
-                      EdgeInsets.only(left: 18, right: 18, bottom: 18),
+                      const EdgeInsets.only(left: 18, right: 18, bottom: 18),
                   title: Text(
                     getMovieTitleWithYear(movie),
                     style: const TextStyle(
@@ -175,8 +174,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(
-                                top: 2), // Adjust the top padding as needed
+                            padding: const EdgeInsets.only(top: 2),
                             child: const Icon(
                               Icons.star,
                               size: 16,
@@ -197,8 +195,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(
-                                top: 2), // Adjust the top padding as needed
+                            padding: const EdgeInsets.only(top: 2),
                             child: const Icon(
                               Icons.timer,
                               size: 16,
@@ -219,7 +216,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                   ),
                   leading: MovieImageWidget(movie: movie),
                   trailing: IconButton(
-                    icon: Icon(Icons.remove_circle_outline),
+                    icon: const Icon(Icons.remove_circle_outline),
                     color: Colors.red,
                     onPressed: () {
                       // Show confirmation dialog
@@ -242,14 +239,13 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                                   'Are you sure you want to remove this movie from your watched list?',
                                   style: TextStyle(fontSize: 16),
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pop(
-                                            context); // Close the dialog
+                                        Navigator.pop(context);
                                       },
                                       child: const Text(
                                         'Cancel',
@@ -263,8 +259,7 @@ class _WatchedMoviesViewState extends State<WatchedMoviesView> {
                                                 movie.id);
                                         // Reload watched movies
                                         loadWatchedMovies();
-                                        Navigator.pop(
-                                            context); // Close the dialog
+                                        Navigator.pop(context);
                                       },
                                       child: const Text(
                                         'Remove',

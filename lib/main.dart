@@ -1,4 +1,3 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movie_assignment/firebase_options.dart';
@@ -50,15 +49,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'WATCHPILOT',
       theme: Provider.of<ThemeProvider>(context).themeData,
-      home: SplashScreen(),
+      home: const SplashScreen(),
       //initialRoute: '/welcome',
       routes: {
-        '/welcome': (context) => WelcomeView(),
+        '/welcome': (context) => const WelcomeView(),
         '/login': (context) => LoginView(),
         '/forgot_password': (context) => ForgotPasswordView(),
         '/home': (context) => HomeView(),
         '/signup': (context) => SignupView(),
-        '/watched_movies': (context) => WatchedMoviesView(),
+        '/watched_movies': (context) => const WatchedMoviesView(),
         '/to_watch_movies': (context) => ToWatchMoviesView(),
         '/settings': (context) => SettingsView(),
         '/search': (context) => SearchView(),

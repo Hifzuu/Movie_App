@@ -5,7 +5,6 @@ import 'package:movie_assignment/local_storage_service/to_watch_list.dart';
 import 'package:movie_assignment/local_storage_service/watchedList_local.dart'
     as watchedLocal;
 import 'package:movie_assignment/models/movie.dart';
-import 'package:movie_assignment/services/movie_api.dart';
 import 'package:movie_assignment/views/details_view.dart';
 import 'package:movie_assignment/widgets/filter_list.dart';
 import 'package:movie_assignment/widgets/get_movie_image.dart';
@@ -92,7 +91,7 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('To - Watch Movies'),
+        title: const Text('To - Watch Movies'),
         automaticallyImplyLeading: false,
         actions: [
           InkWell(
@@ -160,7 +159,7 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                   );
                 },
                 child: ListTile(
-                  contentPadding: EdgeInsets.all(16),
+                  contentPadding: const EdgeInsets.all(16),
                   title: Text(
                     getMovieTitleWithYear(movie),
                     style: const TextStyle(
@@ -175,8 +174,7 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(
-                                top: 2), // Adjust the top padding as needed
+                            padding: const EdgeInsets.only(top: 2),
                             child: const Icon(
                               Icons.star,
                               size: 16,
@@ -197,8 +195,7 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(
-                                top: 2), // Adjust the top padding as needed
+                            padding: const EdgeInsets.only(top: 2),
                             child: const Icon(
                               Icons.timer,
                               size: 16,
@@ -223,10 +220,10 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                     children: [
                       // Button to remove from to-watch list
                       IconButton(
-                        icon: Icon(Icons.remove_circle_outline),
+                        icon: const Icon(Icons.remove_circle_outline),
                         color: Colors.red,
                         onPressed: () {
-                          // Show confirmation dialog
+                          // confirmation dialog
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -246,14 +243,13 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                                       'Are you sure you want to remove this movie from your to-watch list?',
                                       style: TextStyle(fontSize: 16),
                                     ),
-                                    SizedBox(height: 16),
+                                    const SizedBox(height: 16),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.pop(
-                                                context); // Close the dialog
+                                            Navigator.pop(context);
                                           },
                                           child: const Text(
                                             'Cancel',
@@ -268,8 +264,7 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                                                     movie.id);
                                             // Reload watched movies
                                             loadToWatchMovies();
-                                            Navigator.pop(
-                                                context); // Close the dialog
+                                            Navigator.pop(context);
                                           },
                                           child: const Text(
                                             'Remove',
@@ -287,10 +282,10 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                       ),
                       // Button to mark as watched
                       IconButton(
-                        icon: Icon(Icons.check_circle),
+                        icon: const Icon(Icons.check_circle),
                         color: Colors.green,
                         onPressed: () {
-                          // Show confirmation dialog
+                          // confirmation dialog
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -310,14 +305,13 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                                       'Have you watched this movie?',
                                       style: TextStyle(fontSize: 16),
                                     ),
-                                    SizedBox(height: 16),
+                                    const SizedBox(height: 16),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.pop(
-                                                context); // Close the dialog
+                                            Navigator.pop(context);
                                           },
                                           child: const Text(
                                             'Cancel',
@@ -327,7 +321,6 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            // Add logic to mark the movie as watched
                                             // Remove from to-watch list
                                             LocalStorage
                                                 .removeToWatchListLocally(
@@ -335,16 +328,13 @@ class _ToWatchMoviesView extends State<ToWatchMoviesView> {
                                             // Add to watched list
                                             watchedLocal.LocalStorage
                                                 .addToWatchedListLocally(movie);
-                                            // Reload watched and to-watch movies
+                                            // Reload to-watch movies
                                             loadToWatchMovies();
-
-                                            Navigator.pop(
-                                                context); // Close the dialog
-
-                                            // Show additional confirmation message if needed
+                                            Navigator.pop(context);
+                                            // confirmation message
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
-                                              SnackBar(
+                                              const SnackBar(
                                                 content: Text(
                                                     'Movie marked as watched!'),
                                                 duration: Duration(seconds: 2),

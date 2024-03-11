@@ -2,6 +2,7 @@ import 'package:movie_assignment/models/movie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
+  // Add a movie to the locally stored watched list
   static Future<void> addToWatchedListLocally(Movie movie) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -33,6 +34,7 @@ class LocalStorage {
     }
   }
 
+  // Get the locally stored watched movies list
   static Future<List<Movie>> getWatchedListLocally() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -60,6 +62,7 @@ class LocalStorage {
     }
   }
 
+  // Remove a movie from the locally stored watched list
   static Future<void> removeFromWatchedListLocally(int movieId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 

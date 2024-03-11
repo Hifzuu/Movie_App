@@ -9,6 +9,7 @@ class api {
   static const apiKey = '?api_key=28bfc42e2b6e932f53de275690379158';
   static const imagePath = 'https://image.tmdb.org/t/p/w500';
 
+  // URLs for various movie-related endpoints
   static const _trendingUrl =
       'https://api.themoviedb.org/3/trending/movie/day$apiKey';
 
@@ -24,6 +25,7 @@ class api {
   static const _genresUrl =
       'https://api.themoviedb.org/3/genre/movie/list$apiKey';
 
+  // Method to fetch detailed information about a movie by its ID
   Future<Movie> getMovieDetails(int movieId) async {
     final response = await http.get(
       Uri.parse(
@@ -92,7 +94,6 @@ class api {
         moviesWithDetails.add(movieDetails);
       } catch (e) {
         print('Error processing movie: $e');
-        // Handle the error, e.g., exclude the movie or log the issue
       }
     }
 

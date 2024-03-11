@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_assignment/services/shake_detection_provider.dart';
 import 'package:movie_assignment/services/shake_detector.dart';
-import 'package:movie_assignment/theme/theme.dart';
-import 'package:movie_assignment/theme/theme_provider.dart';
 
 class ShakeDetectionSwitch extends StatelessWidget {
   final ShakeDetectionProvider shakeDetectionProvider;

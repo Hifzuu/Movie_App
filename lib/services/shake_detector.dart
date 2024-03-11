@@ -15,9 +15,9 @@ class ShakeDetector {
     _accelerometerSubscription = accelerometerEventStream()
         .throttleTime(const Duration(milliseconds: 500))
         .listen((AccelerometerEvent event) {
-      double x = event.x ?? 0;
-      double y = event.y ?? 0;
-      double z = event.z ?? 0;
+      double x = event.x;
+      double y = event.y;
+      double z = event.z;
 
       double acceleration = x * x + y * y + z * z;
 

@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart' as signOut;
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_assignment/services/movie_api.dart';
@@ -96,13 +94,13 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 Icon(
                   Icons.warning,
-                  color: Colors.red, // Warning color
+                  color: Colors.red,
                 ),
                 SizedBox(width: 8),
                 Text(
                   'No Connection',
                   style: TextStyle(
-                    color: Colors.red, // Warning color
+                    color: Colors.red,
                   ),
                 ),
               ],
@@ -112,13 +110,13 @@ class _HomeViewState extends State<HomeView> {
               TextButton(
                 onPressed: () {
                   if (isDisconnected == false) {
-                    Navigator.pop(context); // Close the dialog
+                    Navigator.pop(context);
                   }
                 },
                 child: const Text(
                   'Retry',
                   style: TextStyle(
-                    color: Colors.red, // Warning color
+                    color: Colors.red,
                   ),
                 ),
               ),
@@ -195,7 +193,7 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -233,12 +231,12 @@ class _HomeViewState extends State<HomeView> {
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.secondary)),
                   onTap: () {
-                    Navigator.pop(context); // Close the drawer
+                    Navigator.pop(context);
                     _onBottomNavTapped(4);
                   },
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -246,7 +244,7 @@ class _HomeViewState extends State<HomeView> {
                         children: [
                           Icon(Icons.dark_mode,
                               color: Theme.of(context).colorScheme.secondary),
-                          SizedBox(width: 8.0), // Adjust the width as needed
+                          SizedBox(width: 8.0),
                           Text('Toggle Theme',
                               style: TextStyle(
                                   color:
@@ -263,7 +261,7 @@ class _HomeViewState extends State<HomeView> {
                   color:
                       Theme.of(context).colorScheme.secondary.withOpacity(0.5),
                 ),
-                Spacer(),
+                const Spacer(),
                 ListTile(
                   leading: Icon(Icons.exit_to_app,
                       color: Theme.of(context).colorScheme.secondary),
@@ -356,7 +354,7 @@ class _HomeViewState extends State<HomeView> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  //trending moovies carousel slider
+                  //trending movies carousel slider
                   SizedBox(
                     child: FutureBuilder(
                       future: trendingMovies,
@@ -381,7 +379,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  //genre specific movie section (selectable list of genres)
+                  // genre specific movie section (selectable list of genres)
                   SizedBox(
                     height: 34,
                     child: FutureBuilder(

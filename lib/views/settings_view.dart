@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:movie_assignment/services/shake_detection_provider.dart';
-import 'package:movie_assignment/services/shake_detector.dart';
 import 'package:movie_assignment/theme/theme_provider.dart';
-import 'package:movie_assignment/views/home_view.dart';
 import 'package:movie_assignment/widgets/shake_switch.dart';
 import 'package:movie_assignment/widgets/theme_switch.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +15,7 @@ class SettingsView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
@@ -52,22 +50,20 @@ class SettingsView extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Row(
                 children: [
-                  const Flexible(
-                    child: Text(
-                      'Shake your device to make a randomly selected movie pop up',
-                      // Add any additional text styling as needed
-                    ),
+                  const Text(
+                    'Shake your device to make a randomly selected movie pop up',
                   ),
+                  const Spacer(),
                   ShakeDetectionSwitch(
                     shakeDetectionProvider: shakeDetectionProvider,
                   ),
                 ],
               ),
-              Divider(),
-              SizedBox(height: 16.0),
+              const Divider(),
+              const SizedBox(height: 16.0),
               Text(
                 'Notifications',
                 style: TextStyle(
@@ -76,10 +72,10 @@ class SettingsView extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               _buildNotificationSwitch(context),
-              Divider(),
-              SizedBox(height: 16.0),
+              const Divider(),
+              const SizedBox(height: 16.0),
               Text(
                 'Additional Settings',
                 style: TextStyle(
@@ -88,16 +84,16 @@ class SettingsView extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               _buildDarkModeSchedule(context),
-              Divider(),
-              SizedBox(height: 16.0),
+              const Divider(),
+              const SizedBox(height: 16.0),
               _buildFeedbackButton(context),
-              Divider(),
-              SizedBox(height: 16.0),
+              const Divider(),
+              const SizedBox(height: 16.0),
               _buildClearCacheButton(context),
-              Divider(),
-              SizedBox(height: 16.0),
+              const Divider(),
+              const SizedBox(height: 16.0),
               Text(
                 'About',
                 style: TextStyle(
@@ -106,7 +102,7 @@ class SettingsView extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               _buildAboutSection(),
             ],
           ),
@@ -121,10 +117,8 @@ class SettingsView extends StatelessWidget {
         const Text('Receive Notifications'),
         const Spacer(),
         Switch(
-          value: true, // Replace with your notification logic
-          onChanged: (value) {
-            // Add your notification settings logic here
-          },
+          value: true,
+          onChanged: (value) {},
         ),
       ],
     );
@@ -212,7 +206,7 @@ class SettingsView extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(dialogContext).pop(); // Close the dialog
+                Navigator.of(dialogContext).pop();
               },
               child: const Text(
                 'Cancel',
@@ -221,7 +215,7 @@ class SettingsView extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                Navigator.of(dialogContext).pop(); // Close the dialog
+                Navigator.of(dialogContext).pop();
                 await _clearAppCache(context);
               },
               child: const Text('Clear'),

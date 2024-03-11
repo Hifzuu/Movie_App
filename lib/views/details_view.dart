@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,14 +7,11 @@ import 'package:movie_assignment/local_storage_service/watchedList_local.dart'
 import 'package:movie_assignment/local_storage_service/to_watch_list.dart'
     as toWatch;
 import 'package:movie_assignment/models/movie.dart';
-import 'package:movie_assignment/views/watched_movies_view.dart';
 import 'package:movie_assignment/widgets/get_movie_image.dart';
 import 'package:movie_assignment/widgets/movie_title_year.dart';
 import 'package:movie_assignment/widgets/trailer_screen.dart';
 import 'package:movie_assignment/widgets/back_button.dart';
 import 'package:movie_assignment/widgets/info_box.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class DetailsView extends StatelessWidget {
   const DetailsView({
@@ -52,7 +48,7 @@ class DetailsView extends StatelessWidget {
                       fit: BoxFit.cover,
                       errorBuilder: (BuildContext context, Object error,
                           StackTrace? stackTrace) {
-                        // Handle the error, e.g., by providing a fallback image
+                        // fallback image
                         return Image.asset(
                             'lib/assets/images/image_not_found.jpg');
                       },
@@ -81,13 +77,10 @@ class DetailsView extends StatelessWidget {
                               child: Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary, // Adjust background color
+                                  color: Theme.of(context).colorScheme.primary,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(
-                                          0.3), // Add a subtle shadow
+                                      color: Colors.black.withOpacity(0.3),
                                       spreadRadius: 2,
                                       blurRadius: 4,
                                       offset: Offset(0, 2),
@@ -98,7 +91,7 @@ class DetailsView extends StatelessWidget {
                                 child: const Icon(
                                   Icons.play_arrow,
                                   size: 50,
-                                  color: Colors.white, // Adjust icon color
+                                  color: Colors.white,
                                 ),
                               ),
                             )
@@ -126,10 +119,12 @@ class DetailsView extends StatelessWidget {
                   const SizedBox(height: 0),
                   Row(
                     children: [
-                      Text(movie.genres,
-                          style: const TextStyle(
-                            color: Colors.grey,
-                          ))
+                      Text(
+                        movie.genres,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -238,7 +233,6 @@ class DetailsView extends StatelessWidget {
                               // Movie is not in the watched list, proceed to add it
                               await toWatch.LocalStorage.addToWatchListLocally(
                                   movie);
-
                               // Show a success pop-up message
                               showDialog(
                                 context: context,
@@ -335,8 +329,7 @@ class DetailsView extends StatelessWidget {
                                           const SizedBox(height: 20),
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pop(); // Close the dialog
+                                              Navigator.of(context).pop();
                                             },
                                             child: const Text(
                                               'OK',
@@ -384,8 +377,7 @@ class DetailsView extends StatelessWidget {
                                           SizedBox(height: 20),
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context)
-                                                  .pop(); // Close the dialog
+                                              Navigator.of(context).pop();
                                             },
                                             child: Text('OK'),
                                           ),
@@ -499,7 +491,7 @@ class DetailsView extends StatelessWidget {
                 child: MovieImageWidget(movie: similarMovies[index]),
               );
             } else {
-              return Container(); // Return an empty container or handle it based on your use case
+              return Container(); // Return an empty container
             }
           },
         ),

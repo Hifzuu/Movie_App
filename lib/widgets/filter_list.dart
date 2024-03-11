@@ -26,7 +26,7 @@ class FilterDropdown extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('Alphabetical Order (A-Z)'),
+            title: const Text('Alphabetical Order (A-Z)'),
             tileColor: currentSort == 'Alphabetical Order (A-Z)'
                 ? Theme.of(context).colorScheme.primary
                 : null,
@@ -36,7 +36,7 @@ class FilterDropdown extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Alphabetical Order (Z-A)'),
+            title: const Text('Alphabetical Order (Z-A)'),
             tileColor: currentSort == 'Alphabetical Order (Z-A)'
                 ? Theme.of(context).colorScheme.primary
                 : null,
@@ -46,7 +46,7 @@ class FilterDropdown extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Top Rated First'),
+            title: const Text('Top Rated First'),
             tileColor: currentSort == 'Top Rated First'
                 ? Theme.of(context).colorScheme.primary
                 : null,
@@ -56,7 +56,7 @@ class FilterDropdown extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Lowest Rated First'),
+            title: const Text('Lowest Rated First'),
             tileColor: currentSort == 'Lowest Rated First'
                 ? Theme.of(context).colorScheme.primary
                 : null,
@@ -66,7 +66,7 @@ class FilterDropdown extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Newest Release First'),
+            title: const Text('Newest Release First'),
             tileColor: currentSort == 'Newest Release First'
                 ? Theme.of(context).colorScheme.primary
                 : null,
@@ -76,7 +76,7 @@ class FilterDropdown extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Oldest Release First'),
+            title: const Text('Oldest Release First'),
             tileColor: currentSort == 'Oldest Release First'
                 ? Theme.of(context).colorScheme.primary
                 : null,
@@ -86,7 +86,7 @@ class FilterDropdown extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Longest Duration First'),
+            title: const Text('Longest Duration First'),
             tileColor: currentSort == 'Longest Duration First'
                 ? Theme.of(context).colorScheme.primary
                 : null,
@@ -96,7 +96,7 @@ class FilterDropdown extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Shortest Duration First'),
+            title: const Text('Shortest Duration First'),
             tileColor: currentSort == 'Shortest Duration First'
                 ? Theme.of(context).colorScheme.primary
                 : null,

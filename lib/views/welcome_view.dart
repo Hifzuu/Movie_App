@@ -1,10 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:movie_assignment/views/login_view.dart';
 import 'package:movie_assignment/views/signup_view.dart';
-import 'package:movie_assignment/widgets/login_scaffold.dart';
 import 'package:movie_assignment/widgets/welcom_button.dart';
 
 class WelcomeView extends StatelessWidget {

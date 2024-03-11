@@ -1,9 +1,11 @@
+// Represents a trailer associated with a movie
 class Trailer {
   final String name;
   final String key;
   final String site;
   final String type;
 
+  // Constructor to create a Trailer instance
   Trailer({
     required this.name,
     required this.key,
@@ -11,7 +13,9 @@ class Trailer {
     required this.type,
   });
 
+  // Factory method to create a Trailer instance from JSON data
   factory Trailer.fromJson(Map<String, dynamic> json) {
+    // Create and return a Trailer instance
     return Trailer(
       name: json['name'],
       key: json['key'],
@@ -21,10 +25,11 @@ class Trailer {
   }
 
   String toString() {
-    // Convert the Trailer object to a string representation
+    // Convert the Trailer object to a string
     return '$name|*|$key|*|$site|*|$type';
   }
 
+  // Factory method to create a Trailer instance from a string
   factory Trailer.fromString(String string) {
     try {
       if (string.toLowerCase() == 'teaser') {
@@ -33,6 +38,7 @@ class Trailer {
         return Trailer(key: '', name: '', site: '', type: '');
       }
 
+      // Split the input string into parts
       List<String> parts = string.split('|*|');
 
       // Check if the parts list has the expected number of components

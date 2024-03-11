@@ -23,7 +23,6 @@ class _SearchViewState extends State<SearchView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search bar with TextField
             CupertinoSearchTextField(
               onChanged: (value) {
                 // Rebuild the UI on each keystroke
@@ -36,11 +35,11 @@ class _SearchViewState extends State<SearchView> {
 
             const SizedBox(height: 16),
 
-            // Display searched movies or top searches
+            // Display searched movies or top searches if no search
             FutureBuilder<List<Movie>>(
               future: _searchQuery.isEmpty
                   ? api()
-                      .getPopularMovies() // Display top searches if no search query
+                      .getPopularMovies() // Display top searches if no search
                   : api().searchMovies(_searchQuery),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -72,7 +71,7 @@ class _SearchViewState extends State<SearchView> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (_searchQuery
-              .isEmpty) // Show "Top Searches" text only if no search query
+              .isEmpty) // Show "top Searches" only if no search query
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -84,7 +83,7 @@ class _SearchViewState extends State<SearchView> {
                 ),
               ),
             ),
-          if (_searchQuery.isEmpty) // Show top searches in a ListView
+          if (_searchQuery.isEmpty)
             searchResults.isEmpty
                 ? Center(
                     child: Text(
